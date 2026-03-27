@@ -1,5 +1,7 @@
 # Files
 
+This is the list of dataset files that may be downloaded and used for the project. The files should be placed in the `files` directory and not be committed to the repository.
+
 ## ABIDE
 
 ### `ABIDEII_MRI_Quality_Metrics`
