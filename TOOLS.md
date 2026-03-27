@@ -14,3 +14,9 @@ https://docs.torchio.org/transforms/augmentation/#intensity
 > MRIQC extracts no-reference IQMs (image quality metrics) from structural (T1w and T2w), functional and diffusion MRI (magnetic resonance imaging) data.
 
 Link: https://github.com/nipreps/mriqc/
+
+## MRIQC-learn
+
+This seems to be the library used to train the MRIQC tool. It notably seems to contain the manual ratings of the ABIDE and DS030 datasets that were used to train the tool as TSV files in the `mriqc/datasets` directory.
+
+Link: https://github.com/nipreps/mriqc-learn
