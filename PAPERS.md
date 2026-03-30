@@ -13,3 +13,7 @@ Datasets: on demand
 ## Image processing and Quality Control for the first 10,000 brain imaging datasets from UK Biobank
 
 Link: https://doi.org/10.1016/j.neuroimage.2017.10.034
+
+## Quality assessment of brain structural MR images: Comparing generalization of deep learning versus hand-crafted feature-based machine learning methods to new sites
+
+Link: https://arxiv.org/abs/2603.18050
