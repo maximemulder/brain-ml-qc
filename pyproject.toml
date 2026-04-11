@@ -5,6 +5,7 @@ dependencies = [
     "monai",
     "mriqc-learn",
     "numpy",
+    "pandas",
     "requests",
     "scikit-learn",
     "torch",
@@ -12,8 +13,9 @@ dependencies = [
 ]
 
 [project.scripts]
-create-dataset    = "brain_mri_qc.create_dataset:main"
-download-abide-ii = "brain_mri_qc.download_abide_ii:main"
+annotate-abide-i = "brain_mri_qc.build_abide_i:main"
+create-dataset   = "brain_mri_qc.create_dataset:main"
+download-abide   = "brain_mri_qc.download_abide:main"
 
 [build-system]
 requires = ["hatchling"]
