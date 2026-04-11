@@ -1,4 +1,7 @@
 from dataclasses import dataclass
+from importlib import resources
+
+import pandas as pd
 
 
 @dataclass
@@ -208,3 +211,12 @@ ABIDE_2 = [
         links=[Link(name="Scan Data", url="https://www.nitrc.org/frs/downloadlink.php/9095")]
     )
 ]
+
+def get_abide_labels() -> pd.DataFrame:
+    """
+    Get the ABIDE I labels including manual ratings.
+    """
+
+    reference = resources.files('mriqc_learn.datasets') / 'abide.tsv'
+    with resources.as_file(reference) as path:
+        return pd.read_csv(path, sep='\t')
