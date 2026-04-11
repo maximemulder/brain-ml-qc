@@ -2,7 +2,12 @@
 name = "brain-mri-qc"
 version = "0.0.0"
 dependencies = [
+    "monai",
+    "mriqc-learn",
     "numpy",
+    "requests",
+    "scikit-learn",
+    "torch",
     "torchio",
 ]
 

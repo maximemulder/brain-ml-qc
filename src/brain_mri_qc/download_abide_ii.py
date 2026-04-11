@@ -223,14 +223,14 @@ def download_file(session: requests.Session, link: Link, file_info: FileInfo, ou
 
         # Verify download
         if downloaded != file_info.size:
-            print_error("Error: Downloaded size mismatch! Cleaning up...")
+            print_error("Download size mismatch. Cleaning up...")
             output_path.unlink()
             sys.exit(-1)
 
-        print(f"Successfully downloaded: {file_info.name}")
+        print("  Download succesful")
 
     except requests.RequestException as e:
-        print(f"\n  Error downloading {link.url}: {e}")
+        print_error(f"Error downloading {link.url}: {e}")
         # Clean up partial download
         if output_path.exists():
             output_path.unlink()
