@@ -118,7 +118,7 @@ def download_file(session: requests.Session, link: Link, file_info: FileInfo, ou
             output_path.unlink()
             sys.exit(-1)
 
-        print("  Download succesful")
+        print("  Download success")
 
     except requests.RequestException as e:
         print_error(f"Error downloading {link.url}: {e}")
