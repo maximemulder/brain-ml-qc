@@ -7,7 +7,8 @@ dependencies = [
 ]
 
 [project.scripts]
-create-dataset = "brain_mri_qc.create_dataset:main"
+create-dataset    = "brain_mri_qc.create_dataset:main"
+download-abide-ii = "brain_mri_qc.download_abide_ii:main"
 
 [build-system]
 requires = ["hatchling"]
