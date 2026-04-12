@@ -220,3 +220,20 @@ def get_abide_labels() -> pd.DataFrame:
     reference = resources.files('mriqc_learn.datasets') / 'abide.tsv'
     with resources.as_file(reference) as path:
         return pd.read_csv(path, sep='\t')
+
+
+def collect_available_ratings(row: pd.Series) -> list[int]:
+    """
+    Collect the manual ratings available in a row.
+    """
+
+    ratings: list[int] = []
+    for rater in ['rater_1', 'rater_2', 'rater_3']:
+        val = row[rater]
+        if val != 'n/a' and pd.notna(val):
+            try:
+                ratings.append(int(float(val)))
+            except (ValueError, TypeError):
+                pass
+
+    return ratings

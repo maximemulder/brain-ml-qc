@@ -2,11 +2,8 @@
 from collections import Counter
 
 import pandas as pd
-import os
-import sys
 
-sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
-from brain_mri_qc.abide import get_abide_labels
+from brain_mri_qc.abide import collect_available_ratings, get_abide_labels
 
 
 def get_rating_distributions(dataframe: pd.DataFrame):
@@ -21,14 +18,7 @@ def get_rating_distributions(dataframe: pd.DataFrame):
 
     for _, row in dataframe.iterrows():
         # Collect valid ratings (ignore 'n/a' and NaN)
-        ratings = []
-        for rater in ['rater_1', 'rater_2', 'rater_3']:
-            val = row[rater]
-            if val != 'n/a' and pd.notna(val):
-                try:
-                    ratings.append(float(val))
-                except (ValueError, TypeError):
-                    pass
+        ratings = collect_available_ratings(row)
 
         # Sort ratings to ignore reviewer order
         ratings_tuple = tuple(sorted(ratings))

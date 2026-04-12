@@ -1,18 +1,20 @@
 #!/usr/bin/env python
 import sys
+import argparse
 from collections import Counter
 from typing import Literal, TypedDict
 
 import pandas as pd
 
-from brain_mri_qc.abide import get_abide_labels
+from brain_mri_qc.abide import collect_available_ratings, get_abide_labels
+from brain_mri_qc.utils import normal_variance
 
 
 class Rating(TypedDict):
     score: int | None
     confidence: Literal['high', 'medium', 'low', 'exclude']
-    reason: str
     n_raters: int
+    n_majority: int
     agreement_level: float
 
 
@@ -21,26 +23,27 @@ def compute_scan_rating(row: pd.Series) -> Rating:
     Compute the quality of a scan based on the available manual assessements.
     """
 
-    # Collect valid ratings
-    ratings = []
-    for rater in ['rater_1', 'rater_2', 'rater_3']:
-        val = row[rater]
-        if val != 'n/a' and pd.notna(val):
-            try:
-                ratings.append(float(val))
-            except (ValueError, TypeError):
-                pass
-
+    ratings = collect_available_ratings(row)
     n_raters = len(ratings)
 
-    # No assessments
+    # No raters
     if n_raters == 0:
         return {
             'score': None,
             'confidence': 'exclude',
-            'reason': 'No ratings available',
             'n_raters': 0,
-            'agreement_level': 0.0
+            'n_majority': 0,
+            'agreement_level': 0.0,
+        }
+
+    # Large disagreement (both 1 and -1 present)
+    if 1 in ratings and -1 in ratings:
+        return {
+            'score': None,
+            'confidence': 'exclude',
+            'n_raters': n_raters,
+            'n_majority': 0,
+            'agreement_level': 0.0,
         }
 
     # Single rater
@@ -49,71 +52,96 @@ def compute_scan_rating(row: pd.Series) -> Rating:
         return {
             'score': score,
             'confidence': 'low',
-            'reason': f'Single rater only (score: {score})',
             'n_raters': 1,
-            'agreement_level': 1.0
+            'n_majority': 1,
+            'agreement_level': 1.0,
         }
 
-    # Large disagreement (both 1 and -1 present)
-    if 1 in ratings and -1 in ratings:
-        return {
-            'score': None,
-            'confidence': 'exclude',
-            'reason': f'Large disagreement: Good vs Bad conflict {ratings}',
-            'n_raters': n_raters,
-            'agreement_level': 0.0
-        }
+    agreement = normal_variance(ratings, -1, 1)
 
     counts = Counter(ratings)
-    majority_score = counts.most_common(1)[0][0]
-    majority_count = counts[majority_score]
-    agreement = majority_count / n_raters
+    score = counts.most_common(1)[0][0]
+    if score > 0:
+        score = 1
+    if score < 0:
+        score = -1
+
+    n_majority = counts[score]
 
     # Determine confidence based on agreement and number of raters
-    if n_raters == 3 and majority_count == 3:
+    if n_raters == n_majority:
         confidence = 'high'
-        reason = 'Unanimous agreement: 3/3 raters'
-    elif n_raters == 3 and majority_count == 2:
+    elif n_raters == 3 and n_majority == 2:
         confidence = 'medium'
-        minority_score = [s for s in ratings if s != majority_score][0]
-        reason = f'Majority (2/3): {majority_score} with 1 dissenter ({minority_score})'
-    elif n_raters == 2 and majority_count == 2:
-        confidence = 'high'
-        reason = 'Complete agreement: 2/2 raters'
-    elif n_raters == 2 and majority_count == 1:
-        confidence = 'low'
-        reason = f'Disagreement between 2 raters: {ratings}'
     else:
         confidence = 'low'
-        reason = f'Mixed ratings: {ratings}'
 
     return {
-        'score': majority_score,
+        'score': score,
         'confidence': confidence,
-        'reason': reason,
         'n_raters': n_raters,
-        'agreement_level': agreement
+        'n_majority': n_majority,
+        'agreement_level': round(agreement, 2),
     }
 
-class Rating(TypedDict):
-    score: int | None
-    confidence: Literal['high', 'medium', 'low', 'exclude']
-    reason: str
-    n_raters: int
-    agreement_level: float
+
+def sort_rating_infos(results: pd.DataFrame, sort_arg: str) -> pd.DataFrame:
+    """
+    Sort the rating information based on the specified columns.
+    """
+
+    # Define custom sort order for confidence
+    confidence_order = {'exclude': 0, 'low': 1, 'medium': 2, 'high': 3}
+    results['confidence_sort'] = results['confidence'].map(confidence_order)
+
+    sort_specs = sort_arg.split(',')
+    sort_columns = []
+    sort_orders = []
+    for spec in sort_specs:
+        spec = spec.strip()
+        if spec.startswith('+'):
+            col = spec[1:]
+            order = 'asc'
+        elif spec.startswith('-'):
+            col = spec[1:]
+            order = 'desc'
+        else:
+            col = spec
+            order = 'asc'  # default
+        if col == 'confidence':
+            col = 'confidence_sort'
+        sort_columns.append(col)
+        sort_orders.append(order == 'asc')
+    if sort_columns:
+        results = results.sort_values(by=sort_columns, ascending=sort_orders)
+        # Drop the temporary column
+        results = results.drop(columns=['confidence_sort'])
+
+    return results
 
 
 def main():
+    parser = argparse.ArgumentParser(description='Synthesize ABIDE ratings.')
+
+    parser.add_argument('--sort',
+        help='Sort by columns with + for ascending, - for descending (e.g., +score,-confidence).')
+
+    args = parser.parse_args()
+
     dataframe = get_abide_labels()
 
-    # Apply compute_row_rating to each row
-    rating_results = dataframe.apply(compute_scan_rating, axis=1)
+    # Get the rating information of each row.
+    rating_infos = dataframe.apply(compute_scan_rating, axis=1)
 
-    # Expand the rating dict into separate columns
-    rating_df = pd.DataFrame(rating_results.tolist())
+    # Expand the rating dict into separate columns.
+    rating_df = pd.DataFrame(rating_infos.tolist())
 
-    # Combine with original dataframe
+    # Combine with original dataframe.
     result_df = pd.concat([dataframe[['subject_id', 'site']], rating_df], axis=1)
+
+    # Apply sorting if specified
+    if args.sort:
+        result_df = sort_rating_infos(result_df, args.sort)
 
     # Print only the TSV to console
     result_df.to_csv(sys.stdout, sep='\t', index=False)
