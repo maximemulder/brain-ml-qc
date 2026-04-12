@@ -13,7 +13,7 @@ from monai.transforms import (
 )
 from monai.data import Dataset, DataLoader
 # Importing the 3D ResNet from MONAI
-from monai.networks.nets import ResNet, resnet18
+from monai.networks.nets import ResNet, resnet50
 
 # 1. DATA PREPARATION (Same logic, ensured label order)
 def prepare_mri_data(data_dir, csv_path, val_size=0.2):
@@ -57,7 +57,7 @@ val_loader = DataLoader(Dataset(data=val_files, transform=transforms), batch_siz
 
 # --- 3. MODEL INITIALIZATION ---
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-modelqc = resnet18(pretrained=False, spatial_dims=3, n_input_channels=1, num_classes=5).to(device)
+modelqc = resnet50(pretrained=False, spatial_dims=3, n_input_channels=1, num_classes=5).to(device)
 
 # --- LOAD MODEL CODE ---
 if os.path.exists("best_resnet_qc_model.pth"):
@@ -76,14 +76,14 @@ def run_training(model, epochs=50):
     best_artifact_acc = 0.0  # Track best accuracy for the main QC task
     
     for epoch in range(epochs):
-        model.train()
+        modelqc.train()
         epoch_loss = 0
         
         for batch_idx, batch_data in enumerate(train_loader):
             inputs, labels = batch_data["image"].to(device), batch_data["label"].to(device)
             
             optimizer.zero_grad() # Clear gradients before forward pass
-            outputs = model(inputs)
+            outputs = modelqc(inputs)
             loss = loss_function(outputs, labels)
             loss.backward()
             optimizer.step()
@@ -96,14 +96,14 @@ def run_training(model, epochs=50):
             epoch_loss += loss.item()
             
         # Validation
-        model.eval()
+        modelqc.eval()
         val_loss, total = 0, 0
         correct_artifact, correct_all = 0, 0
         
         with torch.no_grad():
             for batch_data in val_loader:
                 inputs, labels = batch_data["image"].to(device), batch_data["label"].to(device)
-                outputs = model(inputs)
+                outputs = modelqc(inputs)
                 val_loss += loss_function(outputs, labels).item()
                 
                 preds = (outputs > 0).float()
