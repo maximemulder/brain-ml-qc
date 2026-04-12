@@ -2,7 +2,10 @@
 from collections import Counter
 
 import pandas as pd
+import os
+import sys
 
+sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 from brain_mri_qc.abide import get_abide_labels
 
 
