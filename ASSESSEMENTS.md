@@ -48,7 +48,7 @@ Assessement:
 - The image seems unnormally bright compared to clean images. Although adjusting brightness and contrast seems to fix the issue.
 
 
-## SDU 50182
+### SDU 50182
 
 Path: `SDSU/0050182/session_1/anat_1/mprage.nii.gz`
 Assessement:
