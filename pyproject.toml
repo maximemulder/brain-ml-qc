@@ -13,10 +13,10 @@ dependencies = [
 ]
 
 [project.scripts]
-analyze-abide-ratings    = "brain_mri_qc.analyze_abide_ratings:main"
-create-dataset           = "brain_mri_qc.create_dataset:main"
-download-abide           = "brain_mri_qc.download_abide:main"
-synthesize-abide-ratings = "brain_mri_qc.synthesize_abide_ratings:main"
+analyze-abide-ratings  = "brain_mri_qc.analyze_abide_ratings:main"
+create-dataset         = "brain_mri_qc.create_dataset:main"
+download-abide         = "brain_mri_qc.download_abide:main"
+annotate-abide-ratings = "brain_mri_qc.annotate_abide_ratings:main"
 
 [build-system]
 requires = ["hatchling"]

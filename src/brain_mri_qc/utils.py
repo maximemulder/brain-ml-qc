@@ -5,6 +5,14 @@ from typing import Never
 import numpy as np
 
 
+def print_warning(message: str):
+    """
+    Print a warning message.
+    """
+
+    print(f"WARNING: {message}", file=sys.stderr)
+
+
 def print_error(message: str):
     """
     Print an error message.
