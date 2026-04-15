@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+import os
 from pathlib import Path
 import sys
 import argparse
@@ -6,7 +7,7 @@ from collections import Counter
 from typing import Literal, TypedDict
 
 import pandas as pd
-
+sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 from brain_mri_qc.abide import collect_available_ratings, get_abide_labels
 from brain_mri_qc.utils import normal_variance, print_warning
 
@@ -156,7 +157,6 @@ def main():
 
     parser.add_argument('dataset',
         type=Path,
-        required=False,
         help="Path to the ABIDE I dataset to annotate. If not provided, the labels will be displayed in the console.")
 
     parser.add_argument('--sort',

@@ -1,39 +1,38 @@
 import os
-import glob
 import torch
 import torch.fft
 import pandas as pd
 import numpy as np
+import re
 from pathlib import Path
-from torch import nn
-from torch.nn import BCEWithLogitsLoss
-from torch.optim import Adam
-from sklearn.model_selection import train_test_split
 from monai.transforms import (
     Compose, LoadImaged, EnsureChannelFirstd, 
     Orientationd, ScaleIntensityd, Resized, ToTensord
 )
-from monai.data import Dataset, DataLoader
+from monai.data import CacheDataset, DataLoader
 from monai.networks.nets import resnet18
 
 # --- 1. PHYSICS-INFORMED LOSS MODULE ---
-def compute_physics_loss(images, labels, outputs):
+def compute_physics_loss(images, outputs):
     """
-    Penalizes the model if it misses frequency-domain signatures of spikes/motion.
+    Penalizes high-frequency noise typical of motion/spikes.
+    If model predicts "Good" (1) but frequency variance is high, penalize.
     """
-    # Transform images to k-space (Frequency Domain)
     k_space = torch.fft.fftn(images, dim=(-3, -2, -1))
     k_mag = torch.abs(torch.fft.fftshift(k_space))
     
-    # Spectral variance as a proxy for 'unnatural' frequency noise
+    # Calculate spectral variance normalized by mean magnitude
     spectral_variance = torch.var(k_mag, dim=(-3, -2, -1))
+    norm_variance = spectral_variance / (torch.mean(k_mag) + 1e-6)
     
-    # Logic: if model predicts low 'spike' (index 3) but spectral variance is high, penalize
-    preds = torch.sigmoid(outputs)
-    spike_penalty = spectral_variance * (1 - preds[:, 3])
+    # Higher 'preds' (closer to 1) means model thinks it's a good scan.
+    # We penalize high noise * confidence that it is "Good".
+    preds = torch.sigmoid(outputs).squeeze()
+    phy_penalty = norm_variance * preds 
     
-    return spike_penalty.mean() * 0.05
+    return phy_penalty.mean() * 0.01
 
+'''
 # --- 2. DATA PREPARATION (SYMLINK AWARE) ---
 def prepare_mri_data(data_dir, csv_path, val_size=0.2):
     df = pd.read_csv(csv_path)
@@ -77,95 +76,124 @@ def prepare_mri_data(data_dir, csv_path, val_size=0.2):
     
     return ([item for sid in train_ids for item in subjects[sid]], 
             [item for sid in val_ids for item in subjects[sid]])
+'''
+import re
 
-# --- 3. CONFIG & INITIALIZATION ---
-data_root = "/brain-ml-qc/files/dataset/images" 
-csv_path = "/brain-ml-qc/files/dataset/labels.csv"
-checkpoint_path = "best_resnet_qc_physics.pth"
+def prepare_abide_data(data_root, tsv_path, train_subsites, val_subsite):
+    df = pd.read_csv(tsv_path, sep='\t')
+    
+    # 1. Standardize Labels (1=Good, 0=Bad)
+    def binarize_label(row):
+        if pd.isna(row['score']) or str(row['confidence']).lower() == 'exclude':
+            return 0.0
+        try:
+            return 1.0 if float(row['score']) == 1.0 else 0.0
+        except ValueError:
+            return 0.0
 
-train_files, val_files = prepare_mri_data(data_root, csv_path)
+    df['qc_label'] = df.apply(binarize_label, axis=1)
+    
+    # 2. Create the label map with zero-padding to match folder names
+    # ABIDE folders are usually 7 digits or 5 digits; we'll strip leading zeros 
+    # during matching to be safe.
+    label_map = {str(int(sid)): label for sid, label in zip(df['subject_id'], df['qc_label'])}
+
+    train_files, val_files = [], []
+    root_path = Path(data_root)
+    
+    print(f"Searching in: {root_path.resolve()}")
+
+    # 3. Use rglob to find mprage files regardless of depth
+    all_mprage = list(root_path.rglob("mprage.nii.gz"))
+    
+    if not all_mprage:
+        print("CRITICAL: No 'mprage.nii.gz' files found. Check your file names or root path.")
+        return [], []
+
+    for scan_path in all_mprage:
+        # 4. Robust Subject ID Extraction
+        # Look for a part of the path that is a long number (5-7 digits)
+        sub_id_match = re.search(r'(\d{5,7})', str(scan_path))
+        if not sub_id_match:
+            continue
+            
+        # Convert to string integer to match our label_map (removes leading zeros)
+        sub_id_str = str(int(sub_id_match.group(1)))
+        
+        if sub_id_str in label_map:
+            data_item = {
+                "image": str(scan_path.resolve()), 
+                "label": [label_map[sub_id_str]]
+            }
+            
+            # 5. Site matching
+            # Check which training/val site folder this file belongs to
+            path_str = str(scan_path)
+            if any(site in path_str for site in train_subsites):
+                train_files.append(data_item)
+            elif val_subsite in path_str:
+                val_files.append(data_item)
+
+    print(f"Successfully mapped {len(train_files)} training and {len(val_files)} validation samples.")
+    return train_files, val_files
+
+# --- 3. CONFIGURATION & EXECUTION ---
+DATA_DIR = "/brain-ml-qc/files/ABIDE1/extracted" 
+TSV_PATH = "/brain-ml-qc/files/ABIDE1/labels.tsv"
+TRAIN_SITES = ["NYU_a", "NYU_b", "NYU_c"]
+VAL_SITE = "NYU_d"
+
+train_data, val_data = prepare_abide_data(DATA_DIR, TSV_PATH, TRAIN_SITES, VAL_SITE)
 
 transforms = Compose([
     LoadImaged(keys=["image"]),
     EnsureChannelFirstd(keys=["image"]),
-    Orientationd(keys=["image"], axcodes="RAS"), 
+    Orientationd(keys=["image"], axcodes="RAS"),
     ScaleIntensityd(keys=["image"]),
-    Resized(keys=["image"], spatial_size=(128, 128, 128)), 
+    Resized(keys=["image"], spatial_size=(128, 128, 128)),
     ToTensord(keys=["image", "label"]),
 ])
 
-train_loader = DataLoader(Dataset(data=train_files, transform=transforms), batch_size=4, shuffle=True, num_workers=4, pin_memory=True)
-val_loader = DataLoader(Dataset(data=val_files, transform=transforms), batch_size=4, shuffle=False, num_workers=4)
+# --- 4. DATALOADERS & MODEL ---
+train_loader = DataLoader(CacheDataset(train_data, transforms, cache_rate=1.0), batch_size=4, shuffle=True)
+val_loader = DataLoader(CacheDataset(val_data, transforms, cache_rate=1.0), batch_size=1)
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-modelqc = resnet18(pretrained=False, spatial_dims=3, n_input_channels=1, num_classes=5).to(device)
+model = resnet18(spatial_dims=3, n_input_channels=1, num_classes=1).to(device)
 
-if os.path.exists(checkpoint_path):
-    print(f"Loading existing checkpoint: {checkpoint_path}")
-    modelqc.load_state_dict(torch.load(checkpoint_path, map_location=device))
+criterion = torch.nn.BCEWithLogitsLoss()
+optimizer = torch.optim.Adam(model.parameters(), lr=1e-4)
 
-optimizer = Adam(modelqc.parameters(), lr=1e-4, weight_decay=1e-5)
-loss_function = BCEWithLogitsLoss(reduction='none') # 'none' to allow manual weighting per label
-
-# --- 4. TRAINING FUNCTION ---
-def run_training(model, epochs=50):
-    best_artifact_acc = 0.0
-    
+# --- 5. TRAINING LOOP ---
+def run_train(epochs=20):
     for epoch in range(epochs):
         model.train()
         epoch_loss = 0
-        
-        for batch_idx, batch_data in enumerate(train_loader):
-            inputs, labels = batch_data["image"].to(device), batch_data["label"].to(device)
-            
+        for batch in train_loader:
+            inputs, labels = batch["image"].to(device), batch["label"].to(device)
             optimizer.zero_grad()
+            
             outputs = model(inputs)
+            bce_loss = criterion(outputs, labels)
+            phy_loss = compute_physics_loss(inputs, outputs)
             
-            # Weighted Loss: Focus heavily on 'artifact' (Index 0)
-            # Other labels act as auxiliary guidance
-            raw_loss = loss_function(outputs, labels)
-            weights = torch.tensor([2.0, 1.0, 1.0, 1.0, 1.0]).to(device) # Artifact is 2x more important
-            weighted_loss = (raw_loss * weights).mean()
-            
-            # Add Physics Loss
-            phy_loss = compute_physics_loss(inputs, labels, outputs)
-            total_loss = weighted_loss + phy_loss
-            
+            total_loss = bce_loss + phy_loss
             total_loss.backward()
             optimizer.step()
+            epoch_loss += total_loss.item()
             
-            # Stats for the primary output: 'artifact'
-            batch_preds = (outputs > 0).float()
-            artifact_acc = (batch_preds[:, 0] == labels[:, 0]).float().mean().item()
-            
-            if batch_idx % 10 == 0:
-                print(f"Epoch {epoch+1} | Batch {batch_idx} | Total Loss: {total_loss.item():.4f} | Artifact Acc: {artifact_acc:.2%}")
-
-        # --- Validation ---
+        # Validation
         model.eval()
-        correct_artifact, total_samples = 0, 0
-        
+        correct = 0
         with torch.no_grad():
-            for batch_data in val_loader:
-                inputs, labels = batch_data["image"].to(device), batch_data["label"].to(device)
-                outputs = model(inputs)
-                preds = (outputs > 0).float()
-                
-                # Metric that determines 'Good' vs 'Poor' scan
-                correct_artifact += (preds[:, 0] == labels[:, 0]).sum().item()
-                total_samples += labels.size(0)
+            for v_batch in val_loader:
+                v_inputs, v_labels = v_batch["image"].to(device), v_batch["label"].to(device)
+                v_out = model(v_inputs)
+                pred = (torch.sigmoid(v_out) > 0.5).float()
+                correct += (pred == v_labels).item()
         
-        val_acc = correct_artifact / total_samples
-        print(f"\n--- Epoch {epoch+1} Summary ---")
-        print(f"Current Validation Artifact Acc: {val_acc:.2%}")
-
-        if val_acc > best_artifact_acc:
-            best_artifact_acc = val_acc
-            torch.save(model.state_dict(), checkpoint_path)
-            print(f"  --> [SAVED] New Best Accuracy: {best_artifact_acc:.2%}\n")
+        val_acc = correct / len(val_data) if len(val_data) > 0 else 0
+        print(f"Epoch {epoch+1} | Total Loss: {epoch_loss/len(train_loader):.4f} | Val Acc: {val_acc:.2%}")
 
 if __name__ == "__main__":
-    try:
-        run_training(modelqc)
-    except KeyboardInterrupt:
-        print("\nTraining stopped manually.")
+    run_train()
