@@ -155,7 +155,7 @@ def sort_rating_infos(results: pd.DataFrame, sort_arg: str) -> pd.DataFrame:
 def main():
     parser = argparse.ArgumentParser(description='Synthesize ABIDE ratings.')
 
-    parser.add_argument('dataset',
+    parser.add_argument('--dataset',
         type=Path,
         help="Path to the ABIDE I dataset to annotate. If not provided, the labels will be displayed in the console.")
 
