@@ -14,7 +14,7 @@ from sklearn.metrics import confusion_matrix, precision_recall_fscore_support
 from torch.utils.data import WeightedRandomSampler
 
 # Set up logging to both console and a file
-log_file = "training_log_freq.txt"
+log_file = "logs/training_log_freq.txt"
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s [%(levelname)s] %(message)s',
@@ -187,7 +187,7 @@ def run_train(epochs=50):
 
         # Save Best Model based on Bad Class F1 (The priority for QC)
         if f1[0] > best_f1_bad:
-            torch.save(model.state_dict(), "best_resnet18_qc_freq.pth")
+            torch.save(model.state_dict(), "models/best_resnet18_qc_freq.pth")
             logger.info(f"*** NEW BEST MODEL (Bad F1: {f1[0]:.4f}) SAVED ***")
 
         # LOGGING FOR PAPER TABLE
