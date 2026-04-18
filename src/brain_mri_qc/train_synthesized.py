@@ -18,7 +18,7 @@ from torch.utils.data import WeightedRandomSampler
 log_file = "logs/training_log_synthetic.txt"
 logging.basicConfig(
     level=logging.INFO,
-    format='%(message)s', # Clean format for easier copy-pasting into LaTeX/Excel
+    format='%(message)s',
     handlers=[
         logging.FileHandler(log_file),
         logging.StreamHandler()

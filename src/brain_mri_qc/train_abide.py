@@ -20,7 +20,7 @@ logging.basicConfig(
     format='%(asctime)s [%(levelname)s] %(message)s',
     handlers=[
         logging.FileHandler(log_file),
-        logging.StreamHandler() # This keeps printing to your terminal too
+        logging.StreamHandler()
     ]
 )
 logger = logging.getLogger(__name__)
@@ -161,7 +161,7 @@ def run_train(epochs=50):
         tn, fp, fn, tp = confusion_matrix(all_labels, all_preds).ravel()
 
         # Save Best Model based on Bad Class F1 (The priority for QC)
-        if f1[0] > best_f1_bad:
+        if f1[0] > best_f1_bad or val_acc > best_acc:
             best_f1_bad = f1[0]
             best_acc = val_acc
             torch.save(model.state_dict(), "models/best_resnet18_qc_wo_conf.pth")
