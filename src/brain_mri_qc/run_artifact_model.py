@@ -63,7 +63,7 @@ def predict_scans(model_path, scan_paths, transforms, device, verbose=True):
 
             result = {
                 "scan_path": scan_paths[i],
-                "scan_name": Path(scan_paths[i]).name,
+                "scan_name": str(Path(scan_paths[i]).relative_to(Path(scan_paths[i]).anchor)),
                 "prob_good": prob_good,
                 "prob_bad": prob_bad,
                 "predicted_class": predicted_class,
@@ -149,13 +149,11 @@ def main():
 
     # Define transforms (same as training)
     transforms = Compose([
-        LoadImaged(keys=["image"], ensure_channel_first=True),
-        Lambdad(keys=["image"], func=lambda x: x[..., 0] if x.ndim == 4 else x),  # Take first volume if 4D
+        LoadImaged(keys=["image"]),
         EnsureChannelFirstd(keys=["image"]),
-        Orientationd(keys=["image"], axcodes="RAS", labels=None),  # ← Add labels=None
+        Orientationd(keys=["image"], axcodes="RAS", labels=None),
         ScaleIntensityd(keys=["image"]),
         Resized(keys=["image"], spatial_size=(128, 128, 128)),
-        Lambdad(keys=["image"], func=lambda x: x[:1] if x.shape[0] != 1 else x),  # Ensure single channel
     ])
 
     # Collect scan paths
