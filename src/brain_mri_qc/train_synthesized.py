@@ -145,15 +145,16 @@ def run_train(epochs=50):
             
             # Simple line format for Table 2 copy-pasting
             logger.info(f"TABLE ROW: {name} | {acc:.1f}% | {prec[0]:.2f}/{prec[1]:.2f} | {rec[0]:.2f}/{rec[1]:.2f} | {f1[0]:.2f}/{f1[1]:.2f}")
-            return f1[0]
+            return acc, f1[0]
 
         logger.info(f"\n{'='*20} EPOCH {epoch+1} {'='*20}")
         get_table_metrics(val_loader_syn, "Synthetic-Only")
-        f1_bad_abide = get_table_metrics(val_loader_abide, "ABIDE-Real")
+        val_acc_abide, f1_bad_abide = get_table_metrics(val_loader_abide, "ABIDE-Real")
 
-        if f1_bad_abide > best_f1_abide:
+        if f1_bad_abide > best_f1_abide or val_acc_abide > best_acc_abide:
             best_f1_abide = f1_bad_abide
-            torch.save(model.state_dict(), "best_qc_model.pth")
+            best_acc_abide = val_acc_abide
+            torch.save(model.state_dict(), "best_qc_model_synthesized.pth")
             logger.info(">>> Best ABIDE F1(Bad) improved. Model saved.")
 
 if __name__ == "__main__":

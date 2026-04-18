@@ -16,7 +16,7 @@ from sklearn.metrics import confusion_matrix, precision_recall_fscore_support
 import logging
 
 # Set up logging to both console and a file
-log_file = "training_log.txt"
+log_file = "training_log_freq.txt"
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s [%(levelname)s] %(message)s',
@@ -26,6 +26,25 @@ logging.basicConfig(
     ]
 )
 logger = logging.getLogger(__name__)
+
+def compute_physics_loss(images, outputs):
+    # 1. Transform to Fourier Domain
+    k_space = torch.fft.fftn(images, dim=(-3, -2, -1))
+    k_mag = torch.abs(torch.fft.fftshift(k_space))
+    
+    # 2. Compute Spectral Variance (Signal for artifacts/noise)
+    spectral_variance = torch.var(k_mag, dim=(-3, -2, -1))
+    norm_variance = spectral_variance / (torch.mean(k_mag) + 1e-6)
+    
+    # 3. Get probability of being "Good"
+    preds = torch.sigmoid(outputs).squeeze()
+    
+    # 4. The Penalty: High Variance * High Probability of "Good"
+    # If variance is high, this term is large. To minimize it, 
+    # the model MUST drive 'preds' toward 0 (Bad).
+    phy_penalty = preds * norm_variance
+    
+    return phy_penalty.mean()
 
 def focal_loss(outputs, targets, alpha=0.25, gamma=1.5):
     probs = torch.sigmoid(outputs)
@@ -120,6 +139,9 @@ def run_train(epochs=50):
         model.train()
         epoch_loss = 0
         
+        # Physics weight warmup: Start at 0, slowly increase after epoch 5
+        phy_weight = 0.0001
+        
         for batch in train_loader:
             inputs, labels = batch["image"].to(device), batch["label"].to(device).float()
             optimizer.zero_grad()
@@ -127,7 +149,10 @@ def run_train(epochs=50):
             outputs = model(inputs)
             bce_loss = criterion(outputs, labels)
             
-            total_loss = bce_loss
+            # Compute physics loss
+            phy_loss = compute_physics_loss(inputs, outputs) if phy_weight > 0 else torch.tensor(0.0).to(device)
+            
+            total_loss = bce_loss + (phy_weight * phy_loss)
             
             total_loss.backward()
             optimizer.step()
@@ -161,7 +186,7 @@ def run_train(epochs=50):
         if f1[0] > best_f1_bad or val_acc > best_acc:
             best_f1_bad = f1[0]
             best_acc = val_acc
-            torch.save(model.state_dict(), "best_resnet18_qc_wo_conf.pth")
+            torch.save(model.state_dict(), "best_resnet18_qc_freq.pth")
             logger.info(f"*** NEW BEST MODEL (Bad F1: {f1[0]:.4f}) SAVED ***")
 
         # LOGGING FOR PAPER TABLE

@@ -185,7 +185,7 @@ optimizer = torch.optim.Adam(model.parameters(), lr=1e-5)
 
 # --- 4. TRAINING LOOP ---
 
-def run_train(epochs=20):
+def run_train(epochs=50):
     best_acc = 0.0
     phy_weight = 0.0001 # Start with a small constant weight
 
@@ -238,9 +238,10 @@ def run_train(epochs=20):
         tn, fp, fn, tp = confusion_matrix(all_labels, all_preds).ravel()
 
         # Save Best Model based on Bad Class F1 (The priority for QC)
-        if f1[0] > best_f1_bad:
+        if f1[0] > best_f1_bad or val_acc > best_acc:
             best_f1_bad = f1[0]
-            torch.save(model.state_dict(), "best_resnet18_qc.pth")
+            best_acc = val_acc
+            torch.save(model.state_dict(), "best_resnet18_qc_w_conf.pth")
             logger.info(f"*** NEW BEST MODEL (Bad F1: {f1[0]:.4f}) SAVED ***")
 
         # LOGGING FOR PAPER TABLE
