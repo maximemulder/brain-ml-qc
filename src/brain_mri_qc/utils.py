@@ -32,6 +32,14 @@ def print_error_exit(message: str) -> Never:
     sys.exit(-1)
 
 
+def format_int_string(sring: str):
+    """
+    Format an integer-like string.
+    """
+
+    return str(int(sring))
+
+
 def format_size(size: int) -> str:
     """
     Format a file size as a string.
