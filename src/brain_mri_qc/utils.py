@@ -1,7 +1,9 @@
+from pathlib import Path
 import sys
 from collections.abc import Sequence
 from typing import Never
 
+import nibabel as nib
 import numpy as np
 
 
@@ -59,3 +61,31 @@ def normal_variance(values: Sequence[float], min: float, max: float) -> float:
 
     # Clamp to [0,1] to avoid tiny floating point errors
     return float(np.clip(consensus, 0.0, 1.0))
+
+
+def is_nifti_file(path: Path):
+    """
+    Check if path is a NIfTI file using its extension.
+    """
+
+    return path.name.endswith('.nii') or path.name.endswith('.nii.gz')
+
+
+def is_3d_nifti_file(path: Path):
+    """
+    Check if a file is a 3D NIfTI file (instead of a 4D one).
+    """
+
+    try:
+        img = nib.load(path)
+        # Check if it's 3D (len(shape) == 3) or 4D but with first dimension 1 (squeezable)
+        if len(img.shape) == 3:
+            return True
+        elif len(img.shape) == 4 and img.shape[3] == 1:
+            return True  # 4D with single volume, can be squeezed
+        else:
+            print(f"Skipping {path.name}: {img.shape} dimensions (not 3D T1)")
+            return False
+    except Exception as e:
+        print(f"Warning: Could not read {path.name}: {e}")
+        return False

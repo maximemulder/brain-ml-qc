@@ -5,6 +5,7 @@ dependencies = [
     "matplotlib",
     "monai",
     "mriqc-learn",
+    "nibabel",
     "numpy",
     "pandas",
     "requests",

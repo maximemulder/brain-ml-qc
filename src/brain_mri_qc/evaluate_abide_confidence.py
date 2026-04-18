@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 from monai.networks.nets import resnet18
 from monai.data import DataLoader, CacheDataset
 from monai.transforms import (
-    Compose, LoadImaged, EnsureChannelFirstd, 
+    Compose, LoadImaged, EnsureChannelFirstd,
     Orientationd, ScaleIntensityd, Resized, ToTensord
 )
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
@@ -49,19 +49,19 @@ def evaluate_and_visualize(model_path, val_data, transforms, device, save_dir="q
         for i, batch in enumerate(loader):
             inputs = batch["image"].to(device)
             gt_label = batch["label"] # Convert tensor to int
-            
+
             logit = model(inputs)
             prob = torch.sigmoid(logit) # Convert to Python float
 
             # Extract image for visualization
-            img_data = inputs.cpu().numpy()[0, 0] 
+            img_data = inputs.cpu().numpy()[0, 0]
             mid_slice = img_data[:, :, img_data.shape[2] // 2]
-            
+
             # 1. Determine Label
             pred_label = 1.0 if prob > 0.5 else 0.0
 
             # 2. Calculate Confidence Score (0% to 100%)
-            confidence_score = abs(prob - 0.5) * 2 
+            confidence_score = abs(prob - 0.5) * 2
 
             # 3. Text output
             pred_str = "Good" if pred_label == 1 else "Bad"
@@ -71,27 +71,27 @@ def evaluate_and_visualize(model_path, val_data, transforms, device, save_dir="q
             # 4. Plotting
             plt.figure(figsize=(6, 6))
             plt.imshow(mid_slice, cmap='gray')
-            
+
             # Set color: Green if correct, Red if wrong
             color = 'green' if gt_label == pred_label else 'red'
-            
-            plt.title(f"Pred: {pred_str} ({confidence_score}-Conf)\nActual: {gt_str}", 
+
+            plt.title(f"Pred: {pred_str} ({confidence_score}-Conf)\nActual: {gt_str}",
                       color=color, fontsize=12)
             plt.axis('off')
-            
+
             # Save the figure
             save_path = os.path.join(save_dir, f"result_{i}_gt_{gt_str}.png")
             plt.savefig(save_path, bbox_inches='tight')
-            
+
             # Optional: Show in notebook/console
-            # plt.show() 
+            # plt.show()
             plt.close() # Close to free up memory
 
 if __name__ == "__main__":
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    
+
     # --- RE-USE YOUR CONFIG ---
-    DATA_DIR = "/brain-ml-qc/files/ABIDE1/extracted" 
+    DATA_DIR = "/brain-ml-qc/files/ABIDE1/extracted"
     TSV_PATH = "/brain-ml-qc/files/ABIDE1/labels.tsv"
     TRAIN_SITES = ["NYU_a", "NYU_b", "SDSU", "USM", "CMU_a", "CMU_b"]
     VAL_SITE = ["KKI", "UM"]
@@ -99,7 +99,7 @@ if __name__ == "__main__":
     # --- GENERATE THE LISTS ---
     # This recreates the val_data list of dictionaries
     _, val_data, _ = prepare_abide_data(DATA_DIR, TSV_PATH, TRAIN_SITES, VAL_SITE)
-    
+
     transforms = Compose([
     LoadImaged(keys=["image"]),
     EnsureChannelFirstd(keys=["image"]),
@@ -110,4 +110,4 @@ if __name__ == "__main__":
 
     # --- RUN EVALUATION ---
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    evaluate_and_visualize("best_resnet18_qc_w_conf.pth", val_data, transforms, device)
+    evaluate_and_visualize("models/best_resnet18_qc_w_conf.pth", val_data, transforms, device)
