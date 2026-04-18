@@ -2407,3 +2407,1008 @@ Precision       | 0.4030            | 0.0000
 Recall          | 1.0000            | 0.0000
 F1-Score        | 0.5745            | 0.0000
 TABLE ROW: ABIDE-Real | 40.3% | 0.40/0.00 | 1.00/0.00 | 0.57/0.00
+
+==================== EPOCH 1 ====================
+
+--- Synthetic-Only Results (Epoch 1) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 50.00
+Precision       | 0.5000            | 0.0000
+Recall          | 1.0000            | 0.0000
+F1-Score        | 0.6667            | 0.0000
+TABLE ROW: Synthetic-Only | 50.0% | 0.50/0.00 | 1.00/0.00 | 0.67/0.00
+
+--- ABIDE-Real Results (Epoch 1) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 40.30
+Precision       | 0.4030            | 0.0000
+Recall          | 1.0000            | 0.0000
+F1-Score        | 0.5745            | 0.0000
+TABLE ROW: ABIDE-Real | 40.3% | 0.40/0.00 | 1.00/0.00 | 0.57/0.00
+>>> Best ABIDE F1(Bad) improved. Model saved.
+
+==================== EPOCH 2 ====================
+
+--- Synthetic-Only Results (Epoch 2) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 50.00
+Precision       | 0.5000            | 0.0000
+Recall          | 1.0000            | 0.0000
+F1-Score        | 0.6667            | 0.0000
+TABLE ROW: Synthetic-Only | 50.0% | 0.50/0.00 | 1.00/0.00 | 0.67/0.00
+
+--- ABIDE-Real Results (Epoch 2) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 40.30
+Precision       | 0.4030            | 0.0000
+Recall          | 1.0000            | 0.0000
+F1-Score        | 0.5745            | 0.0000
+TABLE ROW: ABIDE-Real | 40.3% | 0.40/0.00 | 1.00/0.00 | 0.57/0.00
+
+==================== EPOCH 3 ====================
+
+--- Synthetic-Only Results (Epoch 3) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 57.14
+Precision       | 0.5385            | 1.0000
+Recall          | 1.0000            | 0.1429
+F1-Score        | 0.7000            | 0.2500
+TABLE ROW: Synthetic-Only | 57.1% | 0.54/1.00 | 1.00/0.14 | 0.70/0.25
+
+--- ABIDE-Real Results (Epoch 3) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 40.30
+Precision       | 0.4030            | 0.0000
+Recall          | 1.0000            | 0.0000
+F1-Score        | 0.5745            | 0.0000
+TABLE ROW: ABIDE-Real | 40.3% | 0.40/0.00 | 1.00/0.00 | 0.57/0.00
+
+==================== EPOCH 4 ====================
+
+--- Synthetic-Only Results (Epoch 4) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 78.57
+Precision       | 0.7500            | 0.8333
+Recall          | 0.8571            | 0.7143
+F1-Score        | 0.8000            | 0.7692
+TABLE ROW: Synthetic-Only | 78.6% | 0.75/0.83 | 0.86/0.71 | 0.80/0.77
+
+--- ABIDE-Real Results (Epoch 4) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 40.30
+Precision       | 0.4030            | 0.0000
+Recall          | 1.0000            | 0.0000
+F1-Score        | 0.5745            | 0.0000
+TABLE ROW: ABIDE-Real | 40.3% | 0.40/0.00 | 1.00/0.00 | 0.57/0.00
+
+==================== EPOCH 5 ====================
+
+--- Synthetic-Only Results (Epoch 5) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 73.81
+Precision       | 0.7083            | 0.7778
+Recall          | 0.8095            | 0.6667
+F1-Score        | 0.7556            | 0.7179
+TABLE ROW: Synthetic-Only | 73.8% | 0.71/0.78 | 0.81/0.67 | 0.76/0.72
+
+--- ABIDE-Real Results (Epoch 5) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 40.30
+Precision       | 0.4030            | 0.0000
+Recall          | 1.0000            | 0.0000
+F1-Score        | 0.5745            | 0.0000
+TABLE ROW: ABIDE-Real | 40.3% | 0.40/0.00 | 1.00/0.00 | 0.57/0.00
+
+==================== EPOCH 6 ====================
+
+--- Synthetic-Only Results (Epoch 6) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 73.81
+Precision       | 0.7083            | 0.7778
+Recall          | 0.8095            | 0.6667
+F1-Score        | 0.7556            | 0.7179
+TABLE ROW: Synthetic-Only | 73.8% | 0.71/0.78 | 0.81/0.67 | 0.76/0.72
+
+--- ABIDE-Real Results (Epoch 6) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 40.30
+Precision       | 0.4030            | 0.0000
+Recall          | 1.0000            | 0.0000
+F1-Score        | 0.5745            | 0.0000
+TABLE ROW: ABIDE-Real | 40.3% | 0.40/0.00 | 1.00/0.00 | 0.57/0.00
+
+==================== EPOCH 7 ====================
+
+--- Synthetic-Only Results (Epoch 7) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 80.95
+Precision       | 0.8095            | 0.8095
+Recall          | 0.8095            | 0.8095
+F1-Score        | 0.8095            | 0.8095
+TABLE ROW: Synthetic-Only | 81.0% | 0.81/0.81 | 0.81/0.81 | 0.81/0.81
+
+--- ABIDE-Real Results (Epoch 7) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 43.28
+Precision       | 0.4127            | 0.7500
+Recall          | 0.9630            | 0.0750
+F1-Score        | 0.5778            | 0.1364
+TABLE ROW: ABIDE-Real | 43.3% | 0.41/0.75 | 0.96/0.07 | 0.58/0.14
+>>> Best ABIDE F1(Bad) improved. Model saved.
+
+==================== EPOCH 8 ====================
+
+--- Synthetic-Only Results (Epoch 8) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 80.95
+Precision       | 0.8095            | 0.8095
+Recall          | 0.8095            | 0.8095
+F1-Score        | 0.8095            | 0.8095
+TABLE ROW: Synthetic-Only | 81.0% | 0.81/0.81 | 0.81/0.81 | 0.81/0.81
+
+--- ABIDE-Real Results (Epoch 8) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 40.30
+Precision       | 0.4030            | 0.0000
+Recall          | 1.0000            | 0.0000
+F1-Score        | 0.5745            | 0.0000
+TABLE ROW: ABIDE-Real | 40.3% | 0.40/0.00 | 1.00/0.00 | 0.57/0.00
+
+==================== EPOCH 9 ====================
+
+--- Synthetic-Only Results (Epoch 9) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 80.95
+Precision       | 0.8095            | 0.8095
+Recall          | 0.8095            | 0.8095
+F1-Score        | 0.8095            | 0.8095
+TABLE ROW: Synthetic-Only | 81.0% | 0.81/0.81 | 0.81/0.81 | 0.81/0.81
+
+--- ABIDE-Real Results (Epoch 9) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 47.76
+Precision       | 0.4322            | 0.8125
+Recall          | 0.9444            | 0.1625
+F1-Score        | 0.5930            | 0.2708
+TABLE ROW: ABIDE-Real | 47.8% | 0.43/0.81 | 0.94/0.16 | 0.59/0.27
+>>> Best ABIDE F1(Bad) improved. Model saved.
+
+==================== EPOCH 10 ====================
+
+--- Synthetic-Only Results (Epoch 10) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 50.00
+Precision       | 0.5000            | 0.0000
+Recall          | 1.0000            | 0.0000
+F1-Score        | 0.6667            | 0.0000
+TABLE ROW: Synthetic-Only | 50.0% | 0.50/0.00 | 1.00/0.00 | 0.67/0.00
+
+--- ABIDE-Real Results (Epoch 10) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 40.30
+Precision       | 0.4030            | 0.0000
+Recall          | 1.0000            | 0.0000
+F1-Score        | 0.5745            | 0.0000
+TABLE ROW: ABIDE-Real | 40.3% | 0.40/0.00 | 1.00/0.00 | 0.57/0.00
+
+==================== EPOCH 11 ====================
+
+--- Synthetic-Only Results (Epoch 11) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 69.05
+Precision       | 0.6429            | 0.7857
+Recall          | 0.8571            | 0.5238
+F1-Score        | 0.7347            | 0.6286
+TABLE ROW: Synthetic-Only | 69.0% | 0.64/0.79 | 0.86/0.52 | 0.73/0.63
+
+--- ABIDE-Real Results (Epoch 11) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 41.04
+Precision       | 0.4046            | 0.6667
+Recall          | 0.9815            | 0.0250
+F1-Score        | 0.5730            | 0.0482
+TABLE ROW: ABIDE-Real | 41.0% | 0.40/0.67 | 0.98/0.03 | 0.57/0.05
+
+==================== EPOCH 12 ====================
+
+--- Synthetic-Only Results (Epoch 12) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 80.95
+Precision       | 0.8095            | 0.8095
+Recall          | 0.8095            | 0.8095
+F1-Score        | 0.8095            | 0.8095
+TABLE ROW: Synthetic-Only | 81.0% | 0.81/0.81 | 0.81/0.81 | 0.81/0.81
+
+--- ABIDE-Real Results (Epoch 12) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 40.30
+Precision       | 0.4030            | 0.0000
+Recall          | 1.0000            | 0.0000
+F1-Score        | 0.5745            | 0.0000
+TABLE ROW: ABIDE-Real | 40.3% | 0.40/0.00 | 1.00/0.00 | 0.57/0.00
+
+==================== EPOCH 13 ====================
+
+--- Synthetic-Only Results (Epoch 13) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 78.57
+Precision       | 0.8333            | 0.7500
+Recall          | 0.7143            | 0.8571
+F1-Score        | 0.7692            | 0.8000
+TABLE ROW: Synthetic-Only | 78.6% | 0.83/0.75 | 0.71/0.86 | 0.77/0.80
+
+--- ABIDE-Real Results (Epoch 13) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 55.22
+Precision       | 0.4717            | 0.8571
+Recall          | 0.9259            | 0.3000
+F1-Score        | 0.6250            | 0.4444
+TABLE ROW: ABIDE-Real | 55.2% | 0.47/0.86 | 0.93/0.30 | 0.62/0.44
+>>> Best ABIDE F1(Bad) improved. Model saved.
+
+==================== EPOCH 14 ====================
+
+--- Synthetic-Only Results (Epoch 14) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 83.33
+Precision       | 0.9375            | 0.7692
+Recall          | 0.7143            | 0.9524
+F1-Score        | 0.8108            | 0.8511
+TABLE ROW: Synthetic-Only | 83.3% | 0.94/0.77 | 0.71/0.95 | 0.81/0.85
+
+--- ABIDE-Real Results (Epoch 14) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 52.24
+Precision       | 0.4545            | 0.8333
+Recall          | 0.9259            | 0.2500
+F1-Score        | 0.6098            | 0.3846
+TABLE ROW: ABIDE-Real | 52.2% | 0.45/0.83 | 0.93/0.25 | 0.61/0.38
+
+==================== EPOCH 15 ====================
+
+--- Synthetic-Only Results (Epoch 15) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 78.57
+Precision       | 0.7500            | 0.8333
+Recall          | 0.8571            | 0.7143
+F1-Score        | 0.8000            | 0.7692
+TABLE ROW: Synthetic-Only | 78.6% | 0.75/0.83 | 0.86/0.71 | 0.80/0.77
+
+--- ABIDE-Real Results (Epoch 15) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 40.30
+Precision       | 0.4030            | 0.0000
+Recall          | 1.0000            | 0.0000
+F1-Score        | 0.5745            | 0.0000
+TABLE ROW: ABIDE-Real | 40.3% | 0.40/0.00 | 1.00/0.00 | 0.57/0.00
+
+==================== EPOCH 16 ====================
+
+--- Synthetic-Only Results (Epoch 16) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 76.19
+Precision       | 0.7619            | 0.7619
+Recall          | 0.7619            | 0.7619
+F1-Score        | 0.7619            | 0.7619
+TABLE ROW: Synthetic-Only | 76.2% | 0.76/0.76 | 0.76/0.76 | 0.76/0.76
+
+--- ABIDE-Real Results (Epoch 16) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 40.30
+Precision       | 0.4030            | 0.0000
+Recall          | 1.0000            | 0.0000
+F1-Score        | 0.5745            | 0.0000
+TABLE ROW: ABIDE-Real | 40.3% | 0.40/0.00 | 1.00/0.00 | 0.57/0.00
+
+==================== EPOCH 17 ====================
+
+--- Synthetic-Only Results (Epoch 17) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 73.81
+Precision       | 0.7273            | 0.7500
+Recall          | 0.7619            | 0.7143
+F1-Score        | 0.7442            | 0.7317
+TABLE ROW: Synthetic-Only | 73.8% | 0.73/0.75 | 0.76/0.71 | 0.74/0.73
+
+--- ABIDE-Real Results (Epoch 17) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 49.25
+Precision       | 0.4397            | 0.8333
+Recall          | 0.9444            | 0.1875
+F1-Score        | 0.6000            | 0.3061
+TABLE ROW: ABIDE-Real | 49.3% | 0.44/0.83 | 0.94/0.19 | 0.60/0.31
+
+==================== EPOCH 18 ====================
+
+--- Synthetic-Only Results (Epoch 18) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 76.19
+Precision       | 0.7619            | 0.7619
+Recall          | 0.7619            | 0.7619
+F1-Score        | 0.7619            | 0.7619
+TABLE ROW: Synthetic-Only | 76.2% | 0.76/0.76 | 0.76/0.76 | 0.76/0.76
+
+--- ABIDE-Real Results (Epoch 18) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 44.03
+Precision       | 0.4146            | 0.7273
+Recall          | 0.9444            | 0.1000
+F1-Score        | 0.5763            | 0.1758
+TABLE ROW: ABIDE-Real | 44.0% | 0.41/0.73 | 0.94/0.10 | 0.58/0.18
+
+==================== EPOCH 19 ====================
+
+--- Synthetic-Only Results (Epoch 19) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 80.95
+Precision       | 0.8824            | 0.7600
+Recall          | 0.7143            | 0.9048
+F1-Score        | 0.7895            | 0.8261
+TABLE ROW: Synthetic-Only | 81.0% | 0.88/0.76 | 0.71/0.90 | 0.79/0.83
+
+--- ABIDE-Real Results (Epoch 19) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 66.42
+Precision       | 0.5529            | 0.8571
+Recall          | 0.8704            | 0.5250
+F1-Score        | 0.6763            | 0.6512
+TABLE ROW: ABIDE-Real | 66.4% | 0.55/0.86 | 0.87/0.53 | 0.68/0.65
+>>> Best ABIDE F1(Bad) improved. Model saved.
+
+==================== EPOCH 20 ====================
+
+--- Synthetic-Only Results (Epoch 20) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 78.57
+Precision       | 0.7500            | 0.8333
+Recall          | 0.8571            | 0.7143
+F1-Score        | 0.8000            | 0.7692
+TABLE ROW: Synthetic-Only | 78.6% | 0.75/0.83 | 0.86/0.71 | 0.80/0.77
+
+--- ABIDE-Real Results (Epoch 20) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 66.42
+Precision       | 0.5529            | 0.8571
+Recall          | 0.8704            | 0.5250
+F1-Score        | 0.6763            | 0.6512
+TABLE ROW: ABIDE-Real | 66.4% | 0.55/0.86 | 0.87/0.53 | 0.68/0.65
+
+==================== EPOCH 21 ====================
+
+--- Synthetic-Only Results (Epoch 21) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 69.05
+Precision       | 0.6429            | 0.7857
+Recall          | 0.8571            | 0.5238
+F1-Score        | 0.7347            | 0.6286
+TABLE ROW: Synthetic-Only | 69.0% | 0.64/0.79 | 0.86/0.52 | 0.73/0.63
+
+--- ABIDE-Real Results (Epoch 21) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 39.55
+Precision       | 0.3953            | 0.4000
+Recall          | 0.9444            | 0.0250
+F1-Score        | 0.5574            | 0.0471
+TABLE ROW: ABIDE-Real | 39.6% | 0.40/0.40 | 0.94/0.03 | 0.56/0.05
+
+==================== EPOCH 22 ====================
+
+--- Synthetic-Only Results (Epoch 22) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 66.67
+Precision       | 0.6129            | 0.8182
+Recall          | 0.9048            | 0.4286
+F1-Score        | 0.7308            | 0.5625
+TABLE ROW: Synthetic-Only | 66.7% | 0.61/0.82 | 0.90/0.43 | 0.73/0.56
+
+--- ABIDE-Real Results (Epoch 22) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 40.30
+Precision       | 0.4030            | 0.0000
+Recall          | 1.0000            | 0.0000
+F1-Score        | 0.5745            | 0.0000
+TABLE ROW: ABIDE-Real | 40.3% | 0.40/0.00 | 1.00/0.00 | 0.57/0.00
+
+==================== EPOCH 23 ====================
+
+--- Synthetic-Only Results (Epoch 23) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 73.81
+Precision       | 0.7083            | 0.7778
+Recall          | 0.8095            | 0.6667
+F1-Score        | 0.7556            | 0.7179
+TABLE ROW: Synthetic-Only | 73.8% | 0.71/0.78 | 0.81/0.67 | 0.76/0.72
+
+--- ABIDE-Real Results (Epoch 23) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 40.30
+Precision       | 0.4030            | 0.0000
+Recall          | 1.0000            | 0.0000
+F1-Score        | 0.5745            | 0.0000
+TABLE ROW: ABIDE-Real | 40.3% | 0.40/0.00 | 1.00/0.00 | 0.57/0.00
+
+==================== EPOCH 24 ====================
+
+--- Synthetic-Only Results (Epoch 24) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 83.33
+Precision       | 0.8889            | 0.7917
+Recall          | 0.7619            | 0.9048
+F1-Score        | 0.8205            | 0.8444
+TABLE ROW: Synthetic-Only | 83.3% | 0.89/0.79 | 0.76/0.90 | 0.82/0.84
+
+--- ABIDE-Real Results (Epoch 24) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 40.30
+Precision       | 0.4030            | 0.0000
+Recall          | 1.0000            | 0.0000
+F1-Score        | 0.5745            | 0.0000
+TABLE ROW: ABIDE-Real | 40.3% | 0.40/0.00 | 1.00/0.00 | 0.57/0.00
+
+==================== EPOCH 25 ====================
+
+--- Synthetic-Only Results (Epoch 25) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 83.33
+Precision       | 0.9375            | 0.7692
+Recall          | 0.7143            | 0.9524
+F1-Score        | 0.8108            | 0.8511
+TABLE ROW: Synthetic-Only | 83.3% | 0.94/0.77 | 0.71/0.95 | 0.81/0.85
+
+--- ABIDE-Real Results (Epoch 25) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 40.30
+Precision       | 0.4030            | 0.0000
+Recall          | 1.0000            | 0.0000
+F1-Score        | 0.5745            | 0.0000
+TABLE ROW: ABIDE-Real | 40.3% | 0.40/0.00 | 1.00/0.00 | 0.57/0.00
+
+==================== EPOCH 26 ====================
+
+--- Synthetic-Only Results (Epoch 26) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 50.00
+Precision       | 0.5000            | 0.0000
+Recall          | 1.0000            | 0.0000
+F1-Score        | 0.6667            | 0.0000
+TABLE ROW: Synthetic-Only | 50.0% | 0.50/0.00 | 1.00/0.00 | 0.67/0.00
+
+--- ABIDE-Real Results (Epoch 26) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 40.30
+Precision       | 0.4030            | 0.0000
+Recall          | 1.0000            | 0.0000
+F1-Score        | 0.5745            | 0.0000
+TABLE ROW: ABIDE-Real | 40.3% | 0.40/0.00 | 1.00/0.00 | 0.57/0.00
+
+==================== EPOCH 27 ====================
+
+--- Synthetic-Only Results (Epoch 27) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 59.52
+Precision       | 0.5526            | 1.0000
+Recall          | 1.0000            | 0.1905
+F1-Score        | 0.7119            | 0.3200
+TABLE ROW: Synthetic-Only | 59.5% | 0.55/1.00 | 1.00/0.19 | 0.71/0.32
+
+--- ABIDE-Real Results (Epoch 27) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 40.30
+Precision       | 0.4030            | 0.0000
+Recall          | 1.0000            | 0.0000
+F1-Score        | 0.5745            | 0.0000
+TABLE ROW: ABIDE-Real | 40.3% | 0.40/0.00 | 1.00/0.00 | 0.57/0.00
+
+==================== EPOCH 28 ====================
+
+--- Synthetic-Only Results (Epoch 28) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 73.81
+Precision       | 0.6786            | 0.8571
+Recall          | 0.9048            | 0.5714
+F1-Score        | 0.7755            | 0.6857
+TABLE ROW: Synthetic-Only | 73.8% | 0.68/0.86 | 0.90/0.57 | 0.78/0.69
+
+--- ABIDE-Real Results (Epoch 28) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 40.30
+Precision       | 0.4030            | 0.0000
+Recall          | 1.0000            | 0.0000
+F1-Score        | 0.5745            | 0.0000
+TABLE ROW: ABIDE-Real | 40.3% | 0.40/0.00 | 1.00/0.00 | 0.57/0.00
+
+==================== EPOCH 29 ====================
+
+--- Synthetic-Only Results (Epoch 29) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 80.95
+Precision       | 0.8095            | 0.8095
+Recall          | 0.8095            | 0.8095
+F1-Score        | 0.8095            | 0.8095
+TABLE ROW: Synthetic-Only | 81.0% | 0.81/0.81 | 0.81/0.81 | 0.81/0.81
+
+--- ABIDE-Real Results (Epoch 29) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 40.30
+Precision       | 0.4030            | 0.0000
+Recall          | 1.0000            | 0.0000
+F1-Score        | 0.5745            | 0.0000
+TABLE ROW: ABIDE-Real | 40.3% | 0.40/0.00 | 1.00/0.00 | 0.57/0.00
+
+==================== EPOCH 30 ====================
+
+--- Synthetic-Only Results (Epoch 30) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 78.57
+Precision       | 0.8000            | 0.7727
+Recall          | 0.7619            | 0.8095
+F1-Score        | 0.7805            | 0.7907
+TABLE ROW: Synthetic-Only | 78.6% | 0.80/0.77 | 0.76/0.81 | 0.78/0.79
+
+--- ABIDE-Real Results (Epoch 30) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 40.30
+Precision       | 0.4030            | 0.0000
+Recall          | 1.0000            | 0.0000
+F1-Score        | 0.5745            | 0.0000
+TABLE ROW: ABIDE-Real | 40.3% | 0.40/0.00 | 1.00/0.00 | 0.57/0.00
+
+==================== EPOCH 31 ====================
+
+--- Synthetic-Only Results (Epoch 31) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 71.43
+Precision       | 0.6552            | 0.8462
+Recall          | 0.9048            | 0.5238
+F1-Score        | 0.7600            | 0.6471
+TABLE ROW: Synthetic-Only | 71.4% | 0.66/0.85 | 0.90/0.52 | 0.76/0.65
+
+--- ABIDE-Real Results (Epoch 31) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 40.30
+Precision       | 0.4030            | 0.0000
+Recall          | 1.0000            | 0.0000
+F1-Score        | 0.5745            | 0.0000
+TABLE ROW: ABIDE-Real | 40.3% | 0.40/0.00 | 1.00/0.00 | 0.57/0.00
+
+==================== EPOCH 32 ====================
+
+--- Synthetic-Only Results (Epoch 32) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 66.67
+Precision       | 0.6129            | 0.8182
+Recall          | 0.9048            | 0.4286
+F1-Score        | 0.7308            | 0.5625
+TABLE ROW: Synthetic-Only | 66.7% | 0.61/0.82 | 0.90/0.43 | 0.73/0.56
+
+--- ABIDE-Real Results (Epoch 32) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 40.30
+Precision       | 0.4030            | 0.0000
+Recall          | 1.0000            | 0.0000
+F1-Score        | 0.5745            | 0.0000
+TABLE ROW: ABIDE-Real | 40.3% | 0.40/0.00 | 1.00/0.00 | 0.57/0.00
+
+==================== EPOCH 33 ====================
+
+--- Synthetic-Only Results (Epoch 33) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 78.57
+Precision       | 0.8000            | 0.7727
+Recall          | 0.7619            | 0.8095
+F1-Score        | 0.7805            | 0.7907
+TABLE ROW: Synthetic-Only | 78.6% | 0.80/0.77 | 0.76/0.81 | 0.78/0.79
+
+--- ABIDE-Real Results (Epoch 33) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 40.30
+Precision       | 0.4030            | 0.0000
+Recall          | 1.0000            | 0.0000
+F1-Score        | 0.5745            | 0.0000
+TABLE ROW: ABIDE-Real | 40.3% | 0.40/0.00 | 1.00/0.00 | 0.57/0.00
+
+==================== EPOCH 34 ====================
+
+--- Synthetic-Only Results (Epoch 34) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 83.33
+Precision       | 0.9375            | 0.7692
+Recall          | 0.7143            | 0.9524
+F1-Score        | 0.8108            | 0.8511
+TABLE ROW: Synthetic-Only | 83.3% | 0.94/0.77 | 0.71/0.95 | 0.81/0.85
+
+--- ABIDE-Real Results (Epoch 34) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 40.30
+Precision       | 0.4030            | 0.0000
+Recall          | 1.0000            | 0.0000
+F1-Score        | 0.5745            | 0.0000
+TABLE ROW: ABIDE-Real | 40.3% | 0.40/0.00 | 1.00/0.00 | 0.57/0.00
+
+==================== EPOCH 35 ====================
+
+--- Synthetic-Only Results (Epoch 35) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 64.29
+Precision       | 0.5833            | 1.0000
+Recall          | 1.0000            | 0.2857
+F1-Score        | 0.7368            | 0.4444
+TABLE ROW: Synthetic-Only | 64.3% | 0.58/1.00 | 1.00/0.29 | 0.74/0.44
+
+--- ABIDE-Real Results (Epoch 35) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 40.30
+Precision       | 0.4030            | 0.0000
+Recall          | 1.0000            | 0.0000
+F1-Score        | 0.5745            | 0.0000
+TABLE ROW: ABIDE-Real | 40.3% | 0.40/0.00 | 1.00/0.00 | 0.57/0.00
+
+==================== EPOCH 36 ====================
+
+--- Synthetic-Only Results (Epoch 36) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 80.95
+Precision       | 0.8421            | 0.7826
+Recall          | 0.7619            | 0.8571
+F1-Score        | 0.8000            | 0.8182
+TABLE ROW: Synthetic-Only | 81.0% | 0.84/0.78 | 0.76/0.86 | 0.80/0.82
+
+--- ABIDE-Real Results (Epoch 36) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 40.30
+Precision       | 0.4030            | 0.0000
+Recall          | 1.0000            | 0.0000
+F1-Score        | 0.5745            | 0.0000
+TABLE ROW: ABIDE-Real | 40.3% | 0.40/0.00 | 1.00/0.00 | 0.57/0.00
+
+==================== EPOCH 37 ====================
+
+--- Synthetic-Only Results (Epoch 37) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 78.57
+Precision       | 0.7727            | 0.8000
+Recall          | 0.8095            | 0.7619
+F1-Score        | 0.7907            | 0.7805
+TABLE ROW: Synthetic-Only | 78.6% | 0.77/0.80 | 0.81/0.76 | 0.79/0.78
+
+--- ABIDE-Real Results (Epoch 37) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 40.30
+Precision       | 0.4030            | 0.0000
+Recall          | 1.0000            | 0.0000
+F1-Score        | 0.5745            | 0.0000
+TABLE ROW: ABIDE-Real | 40.3% | 0.40/0.00 | 1.00/0.00 | 0.57/0.00
+
+==================== EPOCH 38 ====================
+
+--- Synthetic-Only Results (Epoch 38) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 78.57
+Precision       | 0.7500            | 0.8333
+Recall          | 0.8571            | 0.7143
+F1-Score        | 0.8000            | 0.7692
+TABLE ROW: Synthetic-Only | 78.6% | 0.75/0.83 | 0.86/0.71 | 0.80/0.77
+
+--- ABIDE-Real Results (Epoch 38) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 40.30
+Precision       | 0.4030            | 0.0000
+Recall          | 1.0000            | 0.0000
+F1-Score        | 0.5745            | 0.0000
+TABLE ROW: ABIDE-Real | 40.3% | 0.40/0.00 | 1.00/0.00 | 0.57/0.00
+
+==================== EPOCH 39 ====================
+
+--- Synthetic-Only Results (Epoch 39) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 80.95
+Precision       | 0.8421            | 0.7826
+Recall          | 0.7619            | 0.8571
+F1-Score        | 0.8000            | 0.8182
+TABLE ROW: Synthetic-Only | 81.0% | 0.84/0.78 | 0.76/0.86 | 0.80/0.82
+
+--- ABIDE-Real Results (Epoch 39) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 40.30
+Precision       | 0.4030            | 0.0000
+Recall          | 1.0000            | 0.0000
+F1-Score        | 0.5745            | 0.0000
+TABLE ROW: ABIDE-Real | 40.3% | 0.40/0.00 | 1.00/0.00 | 0.57/0.00
+
+==================== EPOCH 40 ====================
+
+--- Synthetic-Only Results (Epoch 40) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 50.00
+Precision       | 0.5000            | 0.0000
+Recall          | 1.0000            | 0.0000
+F1-Score        | 0.6667            | 0.0000
+TABLE ROW: Synthetic-Only | 50.0% | 0.50/0.00 | 1.00/0.00 | 0.67/0.00
+
+--- ABIDE-Real Results (Epoch 40) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 40.30
+Precision       | 0.4030            | 0.0000
+Recall          | 1.0000            | 0.0000
+F1-Score        | 0.5745            | 0.0000
+TABLE ROW: ABIDE-Real | 40.3% | 0.40/0.00 | 1.00/0.00 | 0.57/0.00
+
+==================== EPOCH 41 ====================
+
+--- Synthetic-Only Results (Epoch 41) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 80.95
+Precision       | 0.8824            | 0.7600
+Recall          | 0.7143            | 0.9048
+F1-Score        | 0.7895            | 0.8261
+TABLE ROW: Synthetic-Only | 81.0% | 0.88/0.76 | 0.71/0.90 | 0.79/0.83
+
+--- ABIDE-Real Results (Epoch 41) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 40.30
+Precision       | 0.4030            | 0.0000
+Recall          | 1.0000            | 0.0000
+F1-Score        | 0.5745            | 0.0000
+TABLE ROW: ABIDE-Real | 40.3% | 0.40/0.00 | 1.00/0.00 | 0.57/0.00
+
+==================== EPOCH 42 ====================
+
+--- Synthetic-Only Results (Epoch 42) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 78.57
+Precision       | 0.7727            | 0.8000
+Recall          | 0.8095            | 0.7619
+F1-Score        | 0.7907            | 0.7805
+TABLE ROW: Synthetic-Only | 78.6% | 0.77/0.80 | 0.81/0.76 | 0.79/0.78
+
+--- ABIDE-Real Results (Epoch 42) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 40.30
+Precision       | 0.4030            | 0.0000
+Recall          | 1.0000            | 0.0000
+F1-Score        | 0.5745            | 0.0000
+TABLE ROW: ABIDE-Real | 40.3% | 0.40/0.00 | 1.00/0.00 | 0.57/0.00
+
+==================== EPOCH 43 ====================
+
+--- Synthetic-Only Results (Epoch 43) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 80.95
+Precision       | 0.8824            | 0.7600
+Recall          | 0.7143            | 0.9048
+F1-Score        | 0.7895            | 0.8261
+TABLE ROW: Synthetic-Only | 81.0% | 0.88/0.76 | 0.71/0.90 | 0.79/0.83
+
+--- ABIDE-Real Results (Epoch 43) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 40.30
+Precision       | 0.4030            | 0.0000
+Recall          | 1.0000            | 0.0000
+F1-Score        | 0.5745            | 0.0000
+TABLE ROW: ABIDE-Real | 40.3% | 0.40/0.00 | 1.00/0.00 | 0.57/0.00
+
+==================== EPOCH 44 ====================
+
+--- Synthetic-Only Results (Epoch 44) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 76.19
+Precision       | 0.7200            | 0.8235
+Recall          | 0.8571            | 0.6667
+F1-Score        | 0.7826            | 0.7368
+TABLE ROW: Synthetic-Only | 76.2% | 0.72/0.82 | 0.86/0.67 | 0.78/0.74
+
+--- ABIDE-Real Results (Epoch 44) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 40.30
+Precision       | 0.4030            | 0.0000
+Recall          | 1.0000            | 0.0000
+F1-Score        | 0.5745            | 0.0000
+TABLE ROW: ABIDE-Real | 40.3% | 0.40/0.00 | 1.00/0.00 | 0.57/0.00
+
+==================== EPOCH 45 ====================
+
+--- Synthetic-Only Results (Epoch 45) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 73.81
+Precision       | 0.6786            | 0.8571
+Recall          | 0.9048            | 0.5714
+F1-Score        | 0.7755            | 0.6857
+TABLE ROW: Synthetic-Only | 73.8% | 0.68/0.86 | 0.90/0.57 | 0.78/0.69
+
+--- ABIDE-Real Results (Epoch 45) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 40.30
+Precision       | 0.4030            | 0.0000
+Recall          | 1.0000            | 0.0000
+F1-Score        | 0.5745            | 0.0000
+TABLE ROW: ABIDE-Real | 40.3% | 0.40/0.00 | 1.00/0.00 | 0.57/0.00
+
+==================== EPOCH 46 ====================
+
+--- Synthetic-Only Results (Epoch 46) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 59.52
+Precision       | 0.5556            | 0.8333
+Recall          | 0.9524            | 0.2381
+F1-Score        | 0.7018            | 0.3704
+TABLE ROW: Synthetic-Only | 59.5% | 0.56/0.83 | 0.95/0.24 | 0.70/0.37
+
+--- ABIDE-Real Results (Epoch 46) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 40.30
+Precision       | 0.4030            | 0.0000
+Recall          | 1.0000            | 0.0000
+F1-Score        | 0.5745            | 0.0000
+TABLE ROW: ABIDE-Real | 40.3% | 0.40/0.00 | 1.00/0.00 | 0.57/0.00
+
+==================== EPOCH 47 ====================
+
+--- Synthetic-Only Results (Epoch 47) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 85.71
+Precision       | 0.9412            | 0.8000
+Recall          | 0.7619            | 0.9524
+F1-Score        | 0.8421            | 0.8696
+TABLE ROW: Synthetic-Only | 85.7% | 0.94/0.80 | 0.76/0.95 | 0.84/0.87
+
+--- ABIDE-Real Results (Epoch 47) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 41.04
+Precision       | 0.4031            | 0.6000
+Recall          | 0.9630            | 0.0375
+F1-Score        | 0.5683            | 0.0706
+TABLE ROW: ABIDE-Real | 41.0% | 0.40/0.60 | 0.96/0.04 | 0.57/0.07
+
+==================== EPOCH 48 ====================
+
+--- Synthetic-Only Results (Epoch 48) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 80.95
+Precision       | 0.8824            | 0.7600
+Recall          | 0.7143            | 0.9048
+F1-Score        | 0.7895            | 0.8261
+TABLE ROW: Synthetic-Only | 81.0% | 0.88/0.76 | 0.71/0.90 | 0.79/0.83
+
+--- ABIDE-Real Results (Epoch 48) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 40.30
+Precision       | 0.4000            | 0.5000
+Recall          | 0.9630            | 0.0250
+F1-Score        | 0.5652            | 0.0476
+TABLE ROW: ABIDE-Real | 40.3% | 0.40/0.50 | 0.96/0.03 | 0.57/0.05
+
+==================== EPOCH 49 ====================
+
+--- Synthetic-Only Results (Epoch 49) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 71.43
+Precision       | 0.6667            | 0.8000
+Recall          | 0.8571            | 0.5714
+F1-Score        | 0.7500            | 0.6667
+TABLE ROW: Synthetic-Only | 71.4% | 0.67/0.80 | 0.86/0.57 | 0.75/0.67
+
+--- ABIDE-Real Results (Epoch 49) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 40.30
+Precision       | 0.4030            | 0.0000
+Recall          | 1.0000            | 0.0000
+F1-Score        | 0.5745            | 0.0000
+TABLE ROW: ABIDE-Real | 40.3% | 0.40/0.00 | 1.00/0.00 | 0.57/0.00
+
+==================== EPOCH 50 ====================
+
+--- Synthetic-Only Results (Epoch 50) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 61.90
+Precision       | 0.5676            | 1.0000
+Recall          | 1.0000            | 0.2381
+F1-Score        | 0.7241            | 0.3846
+TABLE ROW: Synthetic-Only | 61.9% | 0.57/1.00 | 1.00/0.24 | 0.72/0.38
+
+--- ABIDE-Real Results (Epoch 50) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 40.30
+Precision       | 0.4030            | 0.0000
+Recall          | 1.0000            | 0.0000
+F1-Score        | 0.5745            | 0.0000
+TABLE ROW: ABIDE-Real | 40.3% | 0.40/0.00 | 1.00/0.00 | 0.57/0.00

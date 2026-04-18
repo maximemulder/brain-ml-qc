@@ -17,7 +17,7 @@ from monai.networks.nets import resnet18
 from torch.utils.data import WeightedRandomSampler
 
 # --- 1. LOGGING SETUP ---
-log_file = "training_log_synthetic.txt"
+log_file = "logs/training_log_synthetic.txt"
 logging.basicConfig(
     level=logging.INFO,
     format='%(message)s', # Clean format for easier copy-pasting into LaTeX/Excel
@@ -154,7 +154,7 @@ def run_train(epochs=50):
         if f1_bad_abide > best_f1_abide or val_acc_abide > best_acc_abide:
             best_f1_abide = f1_bad_abide
             best_acc_abide = val_acc_abide
-            torch.save(model.state_dict(), "best_qc_model_synthesized.pth")
+            torch.save(model.state_dict(), "models/best_qc_model_synthesized.pth")
             logger.info(">>> Best ABIDE F1(Bad) improved. Model saved.")
 
 if __name__ == "__main__":

@@ -16,7 +16,7 @@ from sklearn.metrics import confusion_matrix, precision_recall_fscore_support
 import logging
 
 # Set up logging to both console and a file
-log_file = "training_log.txt"
+log_file = "logs/training_log.txt"
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s [%(levelname)s] %(message)s',
@@ -161,7 +161,7 @@ def run_train(epochs=50):
         if f1[0] > best_f1_bad or val_acc > best_acc:
             best_f1_bad = f1[0]
             best_acc = val_acc
-            torch.save(model.state_dict(), "best_resnet18_qc_wo_conf.pth")
+            torch.save(model.state_dict(), "models/best_resnet18_qc_wo_conf.pth")
             logger.info(f"*** NEW BEST MODEL (Bad F1: {f1[0]:.4f}) SAVED ***")
 
         # LOGGING FOR PAPER TABLE
