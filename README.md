@@ -2,6 +2,8 @@
 
 Automated neurological MRI quality control using AI.
 
+An up-to-date version of this repository is available on GitHub [here](https://github.com/maximemulder/brain-ml-qc/).
+
 ## Install
 
 To install Brain MRI QC, use the following commands in the project root directory:
