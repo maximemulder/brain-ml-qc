@@ -5,10 +5,10 @@ mkdir -p logs
 mkdir -p models
 
 echo "------------------------------------------------"
-echo "Starting Training on Synthesized Data..."
+echo "Starting Evaluation on Synthesized Data..."
 echo "------------------------------------------------"
 
 # -u flag allows real-time logging to the text file
-python -u src/brain_mri_qc/train_synthesized.py
+python -u src/brain_mri_qc/evaluate_synthesized.py
 
-echo "Synthetic training complete. Weights saved in models/."
+echo "Synthetic evaluation complete."
