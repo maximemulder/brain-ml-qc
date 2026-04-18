@@ -13,7 +13,7 @@ from monai.transforms import (
 from monai.data import CacheDataset, DataLoader
 from monai.networks.nets import resnet18
 from torch.utils.data import WeightedRandomSampler
-from sklearn.metrics import classification_report, confusion_matrix
+from sklearn.metrics import confusion_matrix, precision_recall_fscore_support
 
 # --- 0. LOGGING SETUP ---
 log_file = "training_log_confidence.txt"
@@ -157,11 +157,10 @@ def prepare_abide_data(data_root, tsv_path, train_subsites, val_subsites):
     print(f"Success: {len(train_files)} Train, {len(val_files)} Val samples loaded.")
     return train_files, val_files, sampler
 
-# --- 3. CONFIGURATION ---
-
+# --- 3. CONFIGURATION & LOADING ---
 DATA_DIR = "/brain-ml-qc/files/ABIDE1/extracted" 
 TSV_PATH = "/brain-ml-qc/files/ABIDE1/labels.tsv"
-TRAIN_SITES = ["NYU_a", "NYU_b", "SDSU", "USM"]
+TRAIN_SITES = ["NYU_a", "NYU_b", "SDSU", "USM", "CMU_a", "CMU_b"]
 VAL_SITE = ["KKI", "UM"]
 
 train_data, val_data, train_sampler = prepare_abide_data(DATA_DIR, TSV_PATH, TRAIN_SITES, VAL_SITE)
@@ -186,7 +185,7 @@ optimizer = torch.optim.Adam(model.parameters(), lr=1e-5)
 
 # --- 4. TRAINING LOOP ---
 
-def run_train(epochs=100):
+def run_train(epochs=20):
     best_acc = 0.0
     phy_weight = 0.0001 # Start with a small constant weight
 
@@ -216,7 +215,7 @@ def run_train(epochs=100):
 
         # --- VALIDATION ---
         model.eval()
-        val_correct = 0
+        best_f1_bad = 0.0
         all_preds, all_labels = [], []
 
         with torch.no_grad():
@@ -227,28 +226,34 @@ def run_train(epochs=100):
                 v_out = model(v_inputs)
                 pred = (torch.sigmoid(v_out) > 0.5).float()
                 
-                val_correct += (pred == v_labels).sum().item()
                 all_preds.extend(pred.cpu().numpy().flatten())
                 all_labels.extend(v_labels.cpu().numpy().flatten())
 
-        val_acc = val_correct / len(val_data)
-        
-        # Save Best Model
-        if val_acc > best_acc:
-            best_acc = val_acc
-            torch.save(model.state_dict(), "best_resnet18_qc.pth")
-            logger.info(f"*** NEW BEST MODEL SAVED: {val_acc:.2%} ***")
-
-        # Reporting
+        # Calculate Detailed Metrics
+        # precision[0] is for Bad, precision[1] is for Good
+        precision, recall, f1, _ = precision_recall_fscore_support(
+            all_labels, all_preds, labels=[0, 1], zero_division=0
+        )
+        val_acc = np.mean(np.array(all_labels) == np.array(all_preds))
         tn, fp, fn, tp = confusion_matrix(all_labels, all_preds).ravel()
-        report = classification_report(all_labels, all_preds, target_names=['Bad', 'Good'], zero_division=0)
 
-        logger.info(f"Epoch {epoch+1:03d} | Loss: {epoch_loss/len(train_loader):.4f}")
-        logger.info(f"Val Acc: {val_acc:.2%} | Confusion: TN={tn}, FP={fp}, FN={fn}, TP={tp}")
+        # Save Best Model based on Bad Class F1 (The priority for QC)
+        if f1[0] > best_f1_bad:
+            best_f1_bad = f1[0]
+            torch.save(model.state_dict(), "best_resnet18_qc.pth")
+            logger.info(f"*** NEW BEST MODEL (Bad F1: {f1[0]:.4f}) SAVED ***")
+
+        # LOGGING FOR PAPER TABLE
+        logger.info(f"Epoch {epoch+1:03d} | Total Loss: {epoch_loss/len(train_loader):.4f}")
+        logger.info(f"Acc: {val_acc:.4f} | CM: TN={tn}, FP={fp}, FN={fn}, TP={tp}")
         
-        if (epoch + 1) % 5 == 0:
-            logger.info(f"\n{report}")
-        logger.info("-" * 50)
+        # Format metrics specifically for your paper's Results sub-columns
+        logger.info(f"{'Metric':<10} | {'Bad (0)':<10} | {'Good (1)':<10}")
+        logger.info(f"{'-'*35}")
+        logger.info(f"{'Precision':<10} | {precision[0]:.4f} {'':<5} | {precision[1]:.4f}")
+        logger.info(f"{'Recall':<10} | {recall[0]:.4f} {'':<5} | {recall[1]:.4f}")
+        logger.info(f"{'F1-Score':<10} | {f1[0]:.4f} {'':<5} | {f1[1]:.4f}")
+        logger.info(f"{'='*50}")
 
 if __name__ == "__main__":
     run_train()
