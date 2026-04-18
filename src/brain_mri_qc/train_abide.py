@@ -163,12 +163,8 @@ def run_train(epochs=50):
         # Save Best Model based on Bad Class F1 (The priority for QC)
         if f1[0] > best_f1_bad:
             best_f1_bad = f1[0]
-<<<<<<< HEAD
             best_acc = val_acc
             torch.save(model.state_dict(), "models/best_resnet18_qc_wo_conf.pth")
-=======
-            torch.save(model.state_dict(), "best_resnet18_qc_wo_conf.pth")
->>>>>>> b10d4850f776b278360196120ce361dcc516db28
             logger.info(f"*** NEW BEST MODEL (Bad F1: {f1[0]:.4f}) SAVED ***")
 
         # LOGGING FOR PAPER TABLE
