@@ -1,19 +1,16 @@
-from monai.transforms.utility.dictionary import Lambdad
-from pathlib import Path
+#!/usr/bin/env python
 import argparse
-import os
 import sys
+from pathlib import Path
 
-import torch
 import matplotlib.pyplot as plt
-from monai.networks.nets import resnet18
+import torch
 from monai.data import DataLoader, Dataset
-from monai.transforms import (
-    Compose, LoadImaged, EnsureChannelFirstd,
-    Orientationd, ScaleIntensityd, Resized
-)
+from monai.networks.nets import resnet18
+from monai.transforms import Compose, EnsureChannelFirstd, LoadImaged, Orientationd, Resized, ScaleIntensityd
+from monai.transforms.utility.dictionary import Lambdad
 
-from brain_mri_qc.utils import is_nifti_file, is_3d_nifti_file, print_error_exit
+from brain_mri_qc.utils import is_3d_nifti_file, is_nifti_file, print_error_exit
 
 
 def predict_scans(model_path, scan_paths, transforms, device, verbose=True):

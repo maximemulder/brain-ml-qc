@@ -1,6 +1,6 @@
-from pathlib import Path
 import sys
 from collections.abc import Sequence
+from pathlib import Path
 from typing import Never
 
 import nibabel as nib

@@ -1,6 +1,7 @@
 [project]
 name = "brain-mri-qc"
 version = "0.0.0"
+requires-python = ">= 3.12"
 dependencies = [
     "matplotlib",
     "monai",
@@ -13,6 +14,11 @@ dependencies = [
     "torch",
     "torchio",
     "urllib3",
+]
+
+[project.optional-dependencies]
+dev = [
+    "ruff",
 ]
 
 [project.scripts]
@@ -29,3 +35,9 @@ build-backend = "hatchling.build"
 packages = [
     "src/brain_mri_qc",
 ]
+
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.lint]
+select = ["E", "EXE", "F", "I", "N", "RUF", "UP", "W"]

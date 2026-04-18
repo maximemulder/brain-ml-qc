@@ -1,32 +1,16 @@
+#!/usr/bin/env python
 import os
 import sys
 
-import torch
-import numpy as np
 import matplotlib.pyplot as plt
+import torch
+from monai.data import CacheDataset, DataLoader
 from monai.networks.nets import resnet18
-from monai.data import DataLoader, CacheDataset
-from monai.transforms import (
-    Compose, LoadImaged, EnsureChannelFirstd,
-    Orientationd, ScaleIntensityd, Resized, ToTensord
-)
+from monai.transforms import Compose, EnsureChannelFirstd, LoadImaged, Orientationd, Resized, ScaleIntensityd
+
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 from brain_mri_qc.train_abide_freq import prepare_abide_data
 
-def evaluate_and_visualize(model_path, val_data, transforms, device):
-    # 1. Load Model
-    model = resnet18(spatial_dims=3, n_input_channels=1, num_classes=1).to(device)
-    model.load_state_dict(torch.load(model_path))
-    model.eval()
-
-    # 2. Prepare Data
-    ds = CacheDataset(data=val_data, transform=transforms)
-    loader = DataLoader(ds, batch_size=1, shuffle=False)
-
-    print(f"{'Subject ID':<15} | {'Ground Truth':<12} | {'Prediction':<10} | {'Prob (Good)'}")
-    print("-" * 60)
-
-    results = []
 
 def evaluate_and_visualize(model_path, val_data, transforms, device, save_dir="qc_results"):
     # Create directory if it doesn't exist

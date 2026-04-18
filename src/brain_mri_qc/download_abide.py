@@ -1,17 +1,19 @@
 #!/usr/bin/env python
 import argparse
+import os
+import sys
 import time
 from dataclasses import dataclass
 from getpass import getpass
 from pathlib import Path
-import sys
-import urllib3
-import os
 
 import requests
+import urllib3
+
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 from brain_mri_qc.abide import ABIDE_1, ABIDE_2, Link
 from brain_mri_qc.utils import format_size, format_size_difference, print_error, print_error_exit
+
 
 @dataclass
 class FileInfo:
@@ -88,7 +90,8 @@ def download_file(session: requests.Session, link: Link, file_info: FileInfo, ou
 
         if downloaded != file_info.size:
             print_error("Download size mismatch. Cleaning up...")
-            if output_path.exists(): output_path.unlink()
+            if output_path.exists():
+                output_path.unlink()
             return False
 
         print("  Download success")
@@ -96,7 +99,8 @@ def download_file(session: requests.Session, link: Link, file_info: FileInfo, ou
 
     except (requests.RequestException, Exception) as e:
         print_error(f"\n  Error during download: {e}")
-        if output_path.exists(): output_path.unlink()
+        if output_path.exists():
+            output_path.unlink()
         return False
 
 def main():
@@ -117,7 +121,7 @@ def main():
     urllib3.disable_warnings(category=urllib3.exceptions.InsecureRequestWarning)
 
     dataset = ABIDE_1 if args.dataset == 'abide-i' else ABIDE_2
-    
+
     # Flatten the list of links for easier progress tracking
     all_links = [link for institution in dataset for link in institution.links]
     total_files = len(all_links)
@@ -127,11 +131,9 @@ def main():
         print(f"[{idx}/{total_files}] Processing {file_info.name} ({format_size(file_info.size)})")
 
         max_retries = 5
-        success = False
-        
+
         for attempt in range(max_retries):
             if download_file(session, link, file_info, output_dir):
-                success = True
                 break
             else:
                 if attempt < max_retries - 1:

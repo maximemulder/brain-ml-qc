@@ -1,19 +1,17 @@
-import os
+#!/usr/bin/env python
+import logging
+import re
+from pathlib import Path
+
+import numpy as np
+import pandas as pd
 import torch
 import torch.fft
-import pandas as pd
-import numpy as np
-import re
-import logging
-from pathlib import Path
-from monai.transforms import (
-    Compose, LoadImaged, EnsureChannelFirstd, 
-    Orientationd, ScaleIntensityd, Resized, ToTensord
-)
 from monai.data import CacheDataset, DataLoader
 from monai.networks.nets import resnet18
-from torch.utils.data import WeightedRandomSampler
+from monai.transforms import Compose, EnsureChannelFirstd, LoadImaged, Orientationd, Resized, ScaleIntensityd, ToTensord
 from sklearn.metrics import confusion_matrix, precision_recall_fscore_support
+from torch.utils.data import WeightedRandomSampler
 
 # --- 0. LOGGING SETUP ---
 log_file = "training_log_confidence.txt"
@@ -36,13 +34,14 @@ def compute_physics_loss(images, outputs):
     """
     k_space = torch.fft.fftn(images, dim=(-3, -2, -1))
     k_mag = torch.abs(torch.fft.fftshift(k_space))
-    
+
     spectral_variance = torch.var(k_mag, dim=(-3, -2, -1))
     norm_variance = spectral_variance / (torch.mean(k_mag) + 1e-6)
-    
+
     preds = torch.sigmoid(outputs).squeeze()
-    if preds.ndim == 0: preds = preds.unsqueeze(0) # Handle batch size 1
-    
+    if preds.ndim == 0:
+        preds = preds.unsqueeze(0) # Handle batch size 1
+
     phy_penalty = preds * norm_variance
     return phy_penalty.mean()
 
@@ -54,10 +53,10 @@ def focal_loss(outputs, targets, weights=None, alpha=0.25, gamma=1.5):
     ce_loss = torch.nn.functional.binary_cross_entropy_with_logits(outputs, targets, reduction='none')
     p_t = probs * targets + (1 - probs) * (1 - targets)
     loss = alpha * (1 - p_t)**gamma * ce_loss
-    
+
     if weights is not None:
         loss = loss * weights
-        
+
     return loss.mean()
 
 def prepare_abide_data(data_root, tsv_path, train_subsites, val_subsites):
@@ -66,7 +65,7 @@ def prepare_abide_data(data_root, tsv_path, train_subsites, val_subsites):
     extracts rater confidence, and ensures balanced sampling.
     """
     df = pd.read_csv(tsv_path, sep='\t')
-    
+
     # Mapping Rater Confidence to numerical weights for the loss function
     # High confidence = full weight; lower confidence = reduced impact on loss
     conf_map = {"high": 1.0, "medium": 0.5, "low": 0.25}
@@ -85,19 +84,19 @@ def prepare_abide_data(data_root, tsv_path, train_subsites, val_subsites):
     df['qc_label'] = df.apply(binarize_label, axis=1)
     # Default to 0.25 (low) if confidence is missing but scan is valid
     df['conf_weight'] = df['confidence'].str.lower().map(conf_map).fillna(0.25)
-    
+
     df_clean = df.dropna(subset=['qc_label'])
-    
+
     # Map Subject ID to (Label, Confidence Weight)
     # Standardization to str(int(sid)) is crucial for matching '0050952' to '50952'
     label_info = {
-        str(int(sid)): (label, weight) 
+        str(int(sid)): (label, weight)
         for sid, label, weight in zip(df_clean['subject_id'], df_clean['qc_label'], df_clean['conf_weight'])
     }
 
     train_files, val_files = [], []
     root_path = Path(data_root)
-    
+
     # Use a slightly more flexible glob in case of prefixing, though rglob is generally robust
     all_mprage = list(root_path.rglob("mprage.nii.gz"))
 
@@ -110,18 +109,18 @@ def prepare_abide_data(data_root, tsv_path, train_subsites, val_subsites):
         sub_id_match = re.search(r'(\d{5,7})', full_path_str)
         if not sub_id_match:
             continue
-            
+
         sub_id_str = str(int(sub_id_match.group(1)))
-        
+
         # Check if ID exists in our QC label database
         if sub_id_str in label_info:
             label, weight = label_info[sub_id_str]
             data_item = {
-                "image": full_path_str, 
-                "label": [label], 
+                "image": full_path_str,
+                "label": [label],
                 "conf": [weight]
             }
-            
+
             # Assignment based on site keywords in the path string
             # This handles nested structures like NYU_a/NYU/
             is_train = any(site.upper() in path_str_upper for site in train_subsites)
@@ -144,21 +143,21 @@ def prepare_abide_data(data_root, tsv_path, train_subsites, val_subsites):
     # This ensures that 'Bad' scans (usually the minority) are seen as often as 'Good' scans
     labels = [int(f["label"][0]) for f in train_files]
     class_counts = np.bincount(labels)
-    
+
     if len(class_counts) < 2:
         # Fallback if the selected sites only contain one class
         class_weights = torch.tensor([1.0, 1.0])
     else:
         class_weights = 1. / torch.tensor(class_counts, dtype=torch.float)
-        
-    sample_weights = [class_weights[l] for l in labels]
+
+    sample_weights = [class_weights[label] for label in labels]
     sampler = WeightedRandomSampler(sample_weights, len(sample_weights), replacement=True)
 
     print(f"Success: {len(train_files)} Train, {len(val_files)} Val samples loaded.")
     return train_files, val_files, sampler
 
 # --- 3. CONFIGURATION & LOADING ---
-DATA_DIR = "/brain-ml-qc/files/ABIDE1/extracted" 
+DATA_DIR = "/brain-ml-qc/files/ABIDE1/extracted"
 TSV_PATH = "/brain-ml-qc/files/ABIDE1/labels.tsv"
 TRAIN_SITES = ["NYU_a", "NYU_b", "SDSU", "USM", "CMU_a", "CMU_b"]
 VAL_SITE = ["KKI", "UM"]
@@ -174,9 +173,9 @@ transforms = Compose([
     ToTensord(keys=["image", "label", "conf"]),
 ])
 
-train_loader = DataLoader(CacheDataset(train_data, transforms, cache_rate=1.0), 
+train_loader = DataLoader(CacheDataset(train_data, transforms, cache_rate=1.0),
                           batch_size=4, sampler=train_sampler)
-val_loader = DataLoader(CacheDataset(val_data, transforms, cache_rate=1.0), 
+val_loader = DataLoader(CacheDataset(val_data, transforms, cache_rate=1.0),
                         batch_size=1)
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -192,23 +191,23 @@ def run_train(epochs=50):
     for epoch in range(epochs):
         model.train()
         epoch_loss = 0
-        
+
         for batch in train_loader:
             inputs = batch["image"].to(device)
             labels = batch["label"].to(device).float()
             conf_weights = batch["conf"].to(device).float()
-            
+
             optimizer.zero_grad()
             outputs = model(inputs)
-            
+
             # Confidence-Weighted Focal Loss
             bce_loss = focal_loss(outputs, labels, weights=conf_weights)
-            
+
             # Physics-Informed Penalty
             phy_loss = compute_physics_loss(inputs, outputs)
-            
+
             total_loss = bce_loss + (phy_weight * phy_loss)
-            
+
             total_loss.backward()
             optimizer.step()
             epoch_loss += total_loss.item()
@@ -222,10 +221,10 @@ def run_train(epochs=50):
             for v_batch in val_loader:
                 v_inputs = v_batch["image"].to(device)
                 v_labels = v_batch["label"].to(device).float()
-                
+
                 v_out = model(v_inputs)
                 pred = (torch.sigmoid(v_out) > 0.5).float()
-                
+
                 all_preds.extend(pred.cpu().numpy().flatten())
                 all_labels.extend(v_labels.cpu().numpy().flatten())
 
@@ -239,7 +238,6 @@ def run_train(epochs=50):
 
         # Save Best Model based on Bad Class F1 (The priority for QC)
         if f1[0] > best_f1_bad or val_acc > best_acc:
-            best_f1_bad = f1[0]
             best_acc = val_acc
             torch.save(model.state_dict(), "best_resnet18_qc_w_conf.pth")
             logger.info(f"*** NEW BEST MODEL (Bad F1: {f1[0]:.4f}) SAVED ***")
@@ -247,7 +245,7 @@ def run_train(epochs=50):
         # LOGGING FOR PAPER TABLE
         logger.info(f"Epoch {epoch+1:03d} | Total Loss: {epoch_loss/len(train_loader):.4f}")
         logger.info(f"Acc: {val_acc:.4f} | CM: TN={tn}, FP={fp}, FN={fn}, TP={tp}")
-        
+
         # Format metrics specifically for your paper's Results sub-columns
         logger.info(f"{'Metric':<10} | {'Bad (0)':<10} | {'Good (1)':<10}")
         logger.info(f"{'-'*35}")
