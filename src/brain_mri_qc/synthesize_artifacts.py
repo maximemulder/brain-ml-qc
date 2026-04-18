@@ -33,12 +33,6 @@ def main():
     ))
 
     parser.add_argument(
-        '--copy',
-        action='store_true',
-        help="Copy the unchanged images instead of using symlinks.",
-    )
-
-    parser.add_argument(
         '--num-samples',
         type=int,
         help="Number of images to process.",
@@ -58,9 +52,9 @@ def main():
 
     args = parser.parse_args()
 
-    create_dataset(args.input, args.output, args.num_samples, args.copy)
+    create_dataset(args.input, args.output, args.num_samples)
 
-def create_dataset(input_path: Path, output_path: Path, num_samples: int | None, copy: bool):
+def create_dataset(input_path: Path, output_path: Path, num_samples: int | None):
     # Check that the output directory is empty, creating it if necessary.
     output_path.mkdir(exist_ok=True)
     if not is_empty_directory(output_path):
@@ -87,10 +81,7 @@ def create_dataset(input_path: Path, output_path: Path, num_samples: int | None,
 
         # Save the clean image.
         print(f"Writing clean image '{clean_path}'.")
-        if copy:
-            subject.image.save(clean_path)
-        else:
-            clean_path.symlink_to(subject.path)
+        subject.image.save(clean_path)
 
         write_label_row(labels_path, clean_path.name, None)
 

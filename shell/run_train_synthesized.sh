@@ -5,10 +5,10 @@ mkdir -p logs
 mkdir -p models
 
 echo "------------------------------------------------"
-echo "Starting Evaluation on ABIDE I (Confidence-Weighted)..."
+echo "Starting Training on Synthesized Data..."
 echo "------------------------------------------------"
 
 # -u flag allows real-time logging to the text file
-python -u src/brain_mri_qc/evaluate_abide_confidence.py
+python -u src/brain_mri_qc/train_synthesized.py
 
-echo "ABIDE I (Confidence-Weighted) evaluation complete."
+echo "Synthetic training complete. Weights saved in models/."

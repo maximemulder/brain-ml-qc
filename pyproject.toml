@@ -22,12 +22,12 @@ dev = [
 ]
 
 [project.scripts]
-analyze-abide-ratings  = "brain_mri_qc.analyze_abide_ratings:main"
-annotate-abide-ratings = "brain_mri_qc.annotate_abide_ratings:main"
-bidsify-abide          = "brain_mri_qc.bidsifyabide:main"
-create-dataset         = "brain_mri_qc.create_dataset:main"
-download-abide         = "brain_mri_qc.download_abide:main"
-run-mri-qc             = "brain_mri_qc.run_mri_qc:main"
+bidsify-abide           = "brain_mri_qc.bidsify_abide:main"
+download-abide          = "brain_mri_qc.download_abide:main"
+labelize-abide-ratings  = "brain_mri_qc.labelize_abide_ratings:main"
+run-mri-qc              = "brain_mri_qc.run_mri_qc:main"
+summarize-abide-ratings = "brain_mri_qc.summarize_abide_ratings:main"
+synthesize-artifacts    = "brain_mri_qc.synthesize_artifacts:main"
 
 [build-system]
 requires = ["hatchling"]
