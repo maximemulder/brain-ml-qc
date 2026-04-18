@@ -7,7 +7,7 @@ import numpy as np
 from sklearn.metrics import classification_report, confusion_matrix, accuracy_score
 from monai.data import CacheDataset, DataLoader
 from monai.networks.nets import resnet18
-from monai.transforms import Compose, EnsureChannelFirstd, LoadImaged, Orientationd, Resized, ScaleIntensityd
+from monai.transforms import Compose, EnsureChannelFirstd, LoadImaged, Orientationd, Resized, ScaleIntensityd, ToTensord
 
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 from brain_mri_qc.train_abide_freq import prepare_abide_data
@@ -101,8 +101,9 @@ if __name__ == "__main__":
     Orientationd(keys=["image"], axcodes="RAS"),
     ScaleIntensityd(keys=["image"]),
     Resized(keys=["image"], spatial_size=(128, 128, 128)),
+    ToTensord(keys=["image", "label"]),
     ])
 
     # --- RUN EVALUATION ---
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    evaluate_and_visualize("models/best_resnet18_qc_w_conf.pth", val_data, transforms, device)
+    evaluate_and_visualize("/brain-ml-qc/models/best_resnet18_qc_w_conf.pth", val_data, transforms, device)

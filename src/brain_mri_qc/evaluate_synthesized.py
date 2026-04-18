@@ -7,7 +7,7 @@ import numpy as np
 from sklearn.metrics import classification_report, confusion_matrix, accuracy_score
 from monai.data import CacheDataset, DataLoader
 from monai.networks.nets import resnet18
-from monai.transforms import Compose, EnsureChannelFirstd, LoadImaged, Orientationd, Resized, ScaleIntensityd
+from monai.transforms import Compose, EnsureChannelFirstd, LoadImaged, Orientationd, Resized, ScaleIntensityd, ToTensord
 
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 from brain_mri_qc.train_abide_freq import prepare_abide_data
@@ -82,7 +82,7 @@ def evaluate_and_visualize(model_path, val_data, transforms, device, save_dir="q
     print(confusion_matrix(all_gt, all_pred))
     print("="*30)
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     # --- RE-USE YOUR CONFIG ---
@@ -96,13 +96,15 @@ if __name__ == '__main__':
     _, val_data, _ = prepare_abide_data(DATA_DIR, TSV_PATH, TRAIN_SITES, VAL_SITE)
 
     transforms = Compose([
-        LoadImaged(keys=["image"]),
-        EnsureChannelFirstd(keys=["image"]),
-        Orientationd(keys=["image"], axcodes="RAS"),
-        ScaleIntensityd(keys=["image"]),
-        Resized(keys=["image"], spatial_size=(128, 128, 128)),
+    LoadImaged(keys=["image"]),
+    EnsureChannelFirstd(keys=["image"]),
+    Orientationd(keys=["image"], axcodes="RAS"),
+    ScaleIntensityd(keys=["image"]),
+    Resized(keys=["image"], spatial_size=(128, 128, 128)),
+    ToTensord(keys=["image", "label"]),
     ])
+
 
     # --- RUN EVALUATION ---
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    evaluate_and_visualize("models/best_qc_model_synthesized.pth", val_data, transforms, device)
+    evaluate_and_visualize("/brain-ml-qc/models/best_qc_model_synthesized.pth", val_data, transforms, device)
