@@ -52,3 +52,20 @@ annotate-abide-ratings /path/to/abide/1/dir
 ```
 
 The ABIDE I directory must contain the scan files from the different ABIDE I sites. The script will emit a warning if a scan cannot be found. The script will save the labels to a `labels.tsv` file inside of the dataset. The script also be used without a dataset argument to get a summary of the ABIDE I manual assessements in the console.
+
+## MRIQC
+
+To run the [MRI-QC](https://mriqc.readthedocs.io/en/latest/) tool on the ABIDE dataset, use the following steps.
+
+First, organize the ABIDE dataset into a BIDS dataset using the `bidsify-abide` tool:
+
+```sh
+bidsify-abide /path/to/abide/dir /path/to/abide/bids --sites=SITE1,SITE2...
+```
+
+Then, use the `run-mri-qc` wrapper on the generated BIDS dataset:
+```sh
+run-mri-qc /path/to/abide/bids /path/to/output/dir
+```
+
+Note that running MRI-QC requires to have Docker installed on your machine.

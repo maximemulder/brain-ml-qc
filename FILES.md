@@ -30,5 +30,4 @@ Link: https://kcniconfluence.camh.ca/spaces/BAAR/pages/145162332/Neuroimaging+Da
 
 The demographics of the IXI dataset. Does not seem very interesting for us.
 
-Link https://brain-development.org/ixi-dataset/
-https://osf.io/haf97/overview
+Link: https://brain-development.org/ixi-dataset/
