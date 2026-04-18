@@ -1,12 +1,13 @@
 #!/usr/bin/env python
-import os
-from pathlib import Path
-import sys
 import argparse
+import os
+import sys
 from collections import Counter
+from pathlib import Path
 from typing import Literal, TypedDict
 
 import pandas as pd
+
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 from brain_mri_qc.abide import collect_available_ratings, get_abide_labels
 from brain_mri_qc.utils import normal_variance, print_warning

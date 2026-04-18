@@ -1,19 +1,17 @@
-import os
-import torch
-import torch.fft
-import pandas as pd
-import numpy as np
+#!/usr/bin/env python
+import logging
 import re
 from pathlib import Path
-from monai.transforms import (
-    Compose, LoadImaged, EnsureChannelFirstd, 
-    Orientationd, ScaleIntensityd, Resized, ToTensord
-)
+
+import numpy as np
+import pandas as pd
+import torch
+import torch.fft
 from monai.data import CacheDataset, DataLoader
 from monai.networks.nets import resnet18
-from torch.utils.data import WeightedRandomSampler
+from monai.transforms import Compose, EnsureChannelFirstd, LoadImaged, Orientationd, Resized, ScaleIntensityd, ToTensord
 from sklearn.metrics import confusion_matrix, precision_recall_fscore_support
-import logging
+from torch.utils.data import WeightedRandomSampler
 
 # Set up logging to both console and a file
 log_file = "logs/training_log.txt"
@@ -37,16 +35,20 @@ def focal_loss(outputs, targets, alpha=0.25, gamma=1.5):
 # --- 2. DATA PREPARATION ---
 def prepare_abide_data(data_root, tsv_path, train_subsites, val_subsite):
     df = pd.read_csv(tsv_path, sep='\t')
-    
+
     def binarize_label(row):
         if pd.isna(row['score']) or str(row['confidence']).lower() == 'exclude':
             return None
         try:
             val = float(row['score'])
-            if val == 1.0: return 1.0   # Good
-            elif val == -1.0: return 0.0 # Bad
-            elif val == 0.0: return 1.0  # Marginal mapped to Good
-        except: return None
+            if val == 1.0:
+                return 1.0   # Good
+            elif val == -1.0:
+                return 0.0 # Bad
+            elif val == 0.0:
+                return 1.0  # Marginal mapped to Good
+        except ValueError:
+            return None
         return None
 
     df['qc_label'] = df.apply(binarize_label, axis=1)
@@ -59,9 +61,10 @@ def prepare_abide_data(data_root, tsv_path, train_subsites, val_subsite):
 
     for scan_path in all_mprage:
         sub_id_match = re.search(r'(\d{5,7})', str(scan_path))
-        if not sub_id_match: continue
+        if not sub_id_match:
+            continue
         sub_id_str = str(int(sub_id_match.group(1)))
-        
+
         if sub_id_str in label_map:
             data_item = {"image": str(scan_path.resolve()), "label": [label_map[sub_id_str]]}
             path_str_upper = str(scan_path).upper()
@@ -74,16 +77,16 @@ def prepare_abide_data(data_root, tsv_path, train_subsites, val_subsite):
     labels = [f["label"][0] for f in train_files]
     class_counts = np.bincount(labels) # [count_bad, count_good]
     class_weights = 1. / torch.tensor(class_counts, dtype=torch.float)
-    sample_weights = [class_weights[int(l)] for l in labels]
+    sample_weights = [class_weights[int(label)] for label in labels]
 
     sampler = WeightedRandomSampler(sample_weights, len(sample_weights), replacement=True)
-    
+
     print(f"Stats: Good={int(class_counts[1])}, Bad={int(class_counts[0])}")
-    print(f"Oversampling enabled to force 50/50 batches.")
+    print("Oversampling enabled to force 50/50 batches.")
     return train_files, val_files, sampler
 
 # --- 3. CONFIGURATION & LOADING ---
-DATA_DIR = "/brain-ml-qc/files/ABIDE1/extracted" 
+DATA_DIR = "/brain-ml-qc/files/ABIDE1/extracted"
 TSV_PATH = "/brain-ml-qc/files/ABIDE1/labels.tsv"
 TRAIN_SITES = ["NYU_a", "NYU_b", "SDSU", "USM", "CMU_a", "CMU_b"]
 VAL_SITE = ["KKI", "UM"]
@@ -100,9 +103,9 @@ transforms = Compose([
 ])
 
 # Use the sampler for training; shuffle must be False when using a sampler
-train_loader = DataLoader(CacheDataset(train_data, transforms, cache_rate=1.0), 
+train_loader = DataLoader(CacheDataset(train_data, transforms, cache_rate=1.0),
                           batch_size=4, sampler=train_sampler)
-val_loader = DataLoader(CacheDataset(val_data, transforms, cache_rate=1.0), 
+val_loader = DataLoader(CacheDataset(val_data, transforms, cache_rate=1.0),
                         batch_size=1)
 
 # --- 4. MODEL & LOSS ---
@@ -119,16 +122,16 @@ def run_train(epochs=50):
     for epoch in range(epochs):
         model.train()
         epoch_loss = 0
-        
+
         for batch in train_loader:
             inputs, labels = batch["image"].to(device), batch["label"].to(device).float()
             optimizer.zero_grad()
-            
+
             outputs = model(inputs)
             bce_loss = criterion(outputs, labels)
-            
+
             total_loss = bce_loss
-            
+
             total_loss.backward()
             optimizer.step()
             epoch_loss += total_loss.item()
@@ -142,10 +145,10 @@ def run_train(epochs=50):
             for v_batch in val_loader:
                 v_inputs = v_batch["image"].to(device)
                 v_labels = v_batch["label"].to(device).float()
-                
+
                 v_out = model(v_inputs)
                 pred = (torch.sigmoid(v_out) > 0.5).float()
-                
+
                 all_preds.extend(pred.cpu().numpy().flatten())
                 all_labels.extend(v_labels.cpu().numpy().flatten())
 
@@ -158,16 +161,20 @@ def run_train(epochs=50):
         tn, fp, fn, tp = confusion_matrix(all_labels, all_preds).ravel()
 
         # Save Best Model based on Bad Class F1 (The priority for QC)
-        if f1[0] > best_f1_bad or val_acc > best_acc:
+        if f1[0] > best_f1_bad:
             best_f1_bad = f1[0]
+<<<<<<< HEAD
             best_acc = val_acc
             torch.save(model.state_dict(), "models/best_resnet18_qc_wo_conf.pth")
+=======
+            torch.save(model.state_dict(), "best_resnet18_qc_wo_conf.pth")
+>>>>>>> b10d4850f776b278360196120ce361dcc516db28
             logger.info(f"*** NEW BEST MODEL (Bad F1: {f1[0]:.4f}) SAVED ***")
 
         # LOGGING FOR PAPER TABLE
         logger.info(f"Epoch {epoch+1:03d} | Total Loss: {epoch_loss/len(train_loader):.4f}")
         logger.info(f"Acc: {val_acc:.4f} | CM: TN={tn}, FP={fp}, FN={fn}, TP={tp}")
-        
+
         # Format metrics specifically for your paper's Results sub-columns
         logger.info(f"{'Metric':<10} | {'Bad (0)':<10} | {'Good (1)':<10}")
         logger.info(f"{'-'*35}")

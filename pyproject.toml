@@ -1,10 +1,12 @@
 [project]
 name = "brain-mri-qc"
 version = "0.0.0"
+requires-python = ">= 3.12"
 dependencies = [
     "matplotlib",
     "monai",
     "mriqc-learn",
+    "nibabel",
     "numpy",
     "pandas",
     "requests",
@@ -14,11 +16,18 @@ dependencies = [
     "urllib3",
 ]
 
+[project.optional-dependencies]
+dev = [
+    "ruff",
+]
+
 [project.scripts]
 analyze-abide-ratings  = "brain_mri_qc.analyze_abide_ratings:main"
+annotate-abide-ratings = "brain_mri_qc.annotate_abide_ratings:main"
+bidsify-abide          = "brain_mri_qc.bidsifyabide:main"
 create-dataset         = "brain_mri_qc.create_dataset:main"
 download-abide         = "brain_mri_qc.download_abide:main"
-annotate-abide-ratings = "brain_mri_qc.annotate_abide_ratings:main"
+run-mri-qc             = "brain_mri_qc.run_mri_qc:main"
 
 [build-system]
 requires = ["hatchling"]
@@ -28,3 +37,9 @@ build-backend = "hatchling.build"
 packages = [
     "src/brain_mri_qc",
 ]
+
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.lint]
+select = ["E", "EXE", "F", "I", "N", "RUF", "UP", "W"]
