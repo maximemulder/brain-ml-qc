@@ -119,10 +119,10 @@ def run_train(epochs=50):
             inputs, labels = batch["image"].to(device), batch["label"].to(device).float()
             optimizer.zero_grad()
             outputs = model(inputs)
-            loss_val = focal_loss(outputs, labels) + (0.0001 * compute_physics_loss(inputs, outputs))
-            loss_val.backward()
+            loss = focal_loss(outputs, labels) + (0.0001 * compute_physics_loss(inputs, outputs))
+            loss.backward()
             optimizer.step()
-            epoch_loss += loss_val.item()
+            epoch_loss += loss.item()
 
         # Validation Function for Comprehensive Table Metrics
         def get_table_metrics(loader, name):

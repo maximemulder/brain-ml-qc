@@ -150,12 +150,12 @@ def run_train(epochs=50):
             optimizer.zero_grad()
 
             outputs = model(inputs)
-            bce_loss = criterion(outputs, labels)
+            focal = criterion(outputs, labels)
 
             # Compute physics loss
             phy_loss = compute_physics_loss(inputs, outputs) if phy_weight > 0 else torch.tensor(0.0).to(device)
 
-            total_loss = bce_loss + (phy_weight * phy_loss)
+            total_loss = focal + (phy_weight * phy_loss)
 
             total_loss.backward()
             optimizer.step()
@@ -165,6 +165,7 @@ def run_train(epochs=50):
         model.eval()
         all_preds, all_labels = [], []
         best_f1_bad = 0.0
+        best_acc = 0.0
 
         with torch.no_grad():
             for v_batch in val_loader:

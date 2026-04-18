@@ -201,12 +201,12 @@ def run_train(epochs=50):
             outputs = model(inputs)
 
             # Confidence-Weighted Focal Loss
-            bce_loss = focal_loss(outputs, labels, weights=conf_weights)
+            focal = focal_loss(outputs, labels, weights=conf_weights)
 
             # Physics-Informed Penalty
             phy_loss = compute_physics_loss(inputs, outputs)
 
-            total_loss = bce_loss + (phy_weight * phy_loss)
+            total_loss = focal + (phy_weight * phy_loss)
 
             total_loss.backward()
             optimizer.step()

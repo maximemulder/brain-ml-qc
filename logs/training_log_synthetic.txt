@@ -3412,3 +3412,24 @@ Precision       | 0.4030            | 0.0000
 Recall          | 1.0000            | 0.0000
 F1-Score        | 0.5745            | 0.0000
 TABLE ROW: ABIDE-Real | 40.3% | 0.40/0.00 | 1.00/0.00 | 0.57/0.00
+
+==================== EPOCH 1 ====================
+
+--- Synthetic-Only Results (Epoch 1) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 50.00
+Precision       | 0.5000            | 0.0000
+Recall          | 1.0000            | 0.0000
+F1-Score        | 0.6667            | 0.0000
+TABLE ROW: Synthetic-Only | 50.0% | 0.50/0.00 | 1.00/0.00 | 0.67/0.00
+
+--- ABIDE-Real Results (Epoch 1) ---
+Metric          | Class 0 (Bad)   | Class 1 (Good) 
+--------------------------------------------------
+Accuracy (%)    | 40.30
+Precision       | 0.4030            | 0.0000
+Recall          | 1.0000            | 0.0000
+F1-Score        | 0.5745            | 0.0000
+TABLE ROW: ABIDE-Real | 40.3% | 0.40/0.00 | 1.00/0.00 | 0.57/0.00
+>>> Best ABIDE F1(Bad) improved. Model saved.

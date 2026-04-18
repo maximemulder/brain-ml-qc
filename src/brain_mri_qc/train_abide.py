@@ -128,9 +128,9 @@ def run_train(epochs=50):
             optimizer.zero_grad()
 
             outputs = model(inputs)
-            bce_loss = criterion(outputs, labels)
+            focal = criterion(outputs, labels)
 
-            total_loss = bce_loss
+            total_loss = focal
 
             total_loss.backward()
             optimizer.step()
@@ -140,6 +140,7 @@ def run_train(epochs=50):
         model.eval()
         all_preds, all_labels = [], []
         best_f1_bad = 0.0
+        best_acc = 0.0
 
         with torch.no_grad():
             for v_batch in val_loader:
