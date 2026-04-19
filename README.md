@@ -24,6 +24,49 @@ Once the project is installed, its various tools should be available directly as
 
 This project mainly uses two datasets: IXI and ABIDE I.
 
+### IXI
+
+The expected directory structure of the IXI dataset is as follows:
+
+```
+IXI-T1
+├── IXI001-ABC-1234-T1.nii.gz
+├── IXI002-CDE-5678-T1.nii.gz
+├── IXI003-FGH-4321-T1.nii.gz
+└── ...
+```
+
+### ABIDE
+
+The expected directory structure of the ABIDE I dataset is as follows:
+
+```
+ABIDE
+├── Caltech
+│   ├── 0051234
+│   │   └── session_1
+│   │       ├── anat_1
+│   │       │   └── mprage.nii.gz
+│   │       └── rest_1
+│   │           └── rest.nii.gz
+│   ├── 0056789
+│   │   └── session_1
+│   │       ├── anat_1
+│   │       │   └── mprage.nii.gz
+│   │       └── rest_1
+│   │           └── rest.nii.gz
+│   └── ...
+├── KKI
+│   └── 0054321
+│   │   └── session_1
+│   │       ├── anat_1
+│   │       │   └── mprage.nii.gz
+│   │       └── rest_1
+│   │           └── rest.nii.gz
+│   └── ...
+└── ...
+```
+
 ## Dataset Pipelines
 
 ### Download ABIDE dataset
@@ -36,7 +79,7 @@ download-abide abide-i /path/to/dest/dir/
 
 Since the ABIDE datasets are quite large, the tool can be run several times to download only the missing files in the destination directory.
 
-Note that the well behavior of this script partially depends on the dataset provider that may change and is out of our control.
+Note that the correct behavior of this script partially depends on the dataset provider that may change and is out of our control.
 
 ### Synthesize artifacts
 
